@@ -512,6 +512,7 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
       </button>
       <ul class="nav-links" id="navLinks">
         <li><a href="#paydaslar" data-i18n="nav.paydaslar">Paydaşlar</a></li>
+        <li><a href="#akademik-kadro" data-i18n="nav.kadro">Akademik Kadro</a></li>
         <li><a href="#vizyon" data-i18n="nav.vizyon">Vizyon</a></li>
         <li><a href="#ekonomi" data-i18n="nav.ekonomi">Yeni Sektör</a></li>
         <li><a href="#mufredat" data-i18n="nav.mufredat">Müfredat</a></li>
@@ -539,7 +540,7 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
 <section class="hero">
   <div class="container">
     <span class="hero-eyebrow" data-i18n="hero.eyebrow">Şehrin Hafızası, İnsanlığın Mirası</span>
-    <h2 data-i18n="hero.title">Bir Şehri Okumak, Dünyayı Anlamaktır</h2>
+    <h2 data-i18n="hero.title">İstanbullu Olmak, Kültürlü Olmaktır</h2>
     <p data-i18n="hero.desc">İstanbul Keşif Okulu; şehrin arkeolojik, sosyolojik, tarihi ve kültürel katmanlarını sığ bir turistik gezi anlayışından kurtarıp, akademik bir disiplin ve yepyeni bir meslek dalı olan <strong style="color:var(--gold-bright)">"Şehir Kültürü Uzmanlığı"</strong>na dönüştüren dünyadaki ilk sivil akademi modelidir.</p>
     <button class="hero-badge" onclick="openCertModal()" data-i18n="hero.badge">İstanbulluluk Sertifikası</button>
     <div style="margin-top:22px;position:relative;z-index:1;">
@@ -575,6 +576,30 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
         <p data-i18n="paydas.c4.desc">Cami, külliye, sebil ve çeşme gibi vakıf eserlerine eğitim amaçlı erişim ile koruma bilinci çalışmalarında iş birliği sağlar.</p>
       </div>
     </div>
+    <div class="curriculum-intro reveal mt-20">
+      <h4 data-i18n="paydas.other.title">Diğer Paydaşlarımız</h4>
+      <p style="margin-bottom:14px;" data-i18n="paydas.other.desc">Program, kuruluşundan bu yana aşağıdaki kamu kurumu, sivil toplum kuruluşu ve özel sektör temsilcisinin desteği ve iş birliğiyle güçlenmiştir:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="meta-tag">Kültür ve Turizm Bakanlığı</span>
+        <span class="meta-tag">İstanbul Üniversitesi</span>
+        <span class="meta-tag">İstanbul Büyükşehir Belediyesi</span>
+        <span class="meta-tag">İKSV (İstanbul Kültür ve Sanat Vakfı)</span>
+        <span class="meta-tag">İstanbul Teknokent A.Ş.</span>
+        <span class="meta-tag">TÜRSAB</span>
+        <span class="meta-tag">İstanbul Ticaret Odası (İTO)</span>
+        <span class="meta-tag">Türk Hava Yolları</span>
+        <span class="meta-tag">Türk Telekom</span>
+        <span class="meta-tag">TAV (Tepe Akfen Vakfı)</span>
+        <span class="meta-tag">İstanbul Rehberler Odası (İRO)</span>
+        <span class="meta-tag">İstanbul Rotary Kulübü</span>
+        <span class="meta-tag">Alman Arkeoloji Enstitüsü</span>
+        <span class="meta-tag">Hollanda Arkeoloji Enstitüsü</span>
+        <span class="meta-tag">Dünya Genç Üniversiteliler Birliği</span>
+        <span class="meta-tag">Türkçe Olimpiyatları</span>
+        <span class="meta-tag">Başbakanlık Tanıtma Fonu</span>
+        <span class="meta-tag">Türk Tanıtma Fonu</span>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -589,14 +614,59 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
     </div>
     <div class="grid-2">
       <div class="card reveal">
-        <h3><span data-i18n="vizyon.card1.title">✦ Neden Bu Proje?</span></h3>
+        <h3><span data-i18n="vizyon.card1.title">✦ Amacımız</span></h3>
         <ul style="margin-left:20px;margin-top:10px;line-height:2;" data-i18n-html="vizyon.card1.list"></ul>
       </div>
       <div class="card reveal">
-        <h3><span data-i18n="vizyon.card2.title">✦ İstanbulluluk Sertifikası</span></h3>
-        <p data-i18n="vizyon.card2.intro">Programı tamamlayanlar <strong>"İstanbulluluk Kartı"</strong>na sahip olur. Bu kart;</p>
-        <ul style="margin-left:20px;margin-top:10px;line-height:2;" data-i18n-html="vizyon.card2.list"></ul>
+        <h3><span data-i18n="vizyon.misyon.title">✦ Misyonumuz</span></h3>
+        <p data-i18n="vizyon.misyon.body">İstanbul Keşif Okulu; İstanbul Keşif Dergisi, İstanbul turları ile diğer medya ve basın organlarını kullanarak İstanbul'u keşfetmeyi, İstanbul ile ilgili araştırmaları derinleştirmeyi, elde edilen bilgileri geniş kitlelerle paylaşmayı ve yurt içi-yurt dışından gelen kişilerde İstanbul bilincini oluşturup artırmayı misyon edinir.</p>
       </div>
+    </div>
+    <div class="grid-2 mt-20">
+      <div class="card reveal">
+        <h3><span data-i18n="vizyon.kapsam.title">✦ Kapsamımız</span></h3>
+        <p data-i18n="vizyon.kapsam.body">İstanbul odaklı, yenilikçi bir okul olan İstanbul Keşif Okulu, İstanbul'da yaşayan veya farklı amaçlarla İstanbul'a gelmiş yerli ve yabancı kişilerin şehri keşfetmelerini sağlar. Programlar arkeolojik, jeolojik, tarihi, sanatsal, doğal, sosyal ve dini zenginlikler gibi kültürün bütün unsurlarını kapsayacak şekilde tasarlanmıştır.</p>
+      </div>
+      <div class="card reveal">
+        <h3><span data-i18n="vizyon.hedef.title">✦ Hedef Kitlemiz</span></h3>
+        <ul style="margin-left:20px;margin-top:10px;line-height:2;" data-i18n-html="vizyon.hedef.list"></ul>
+      </div>
+    </div>
+    <div class="card mt-20 reveal">
+      <h3><span data-i18n="vizyon.card2.title">✦ İstanbulluluk Sertifikası</span></h3>
+      <p data-i18n="vizyon.card2.intro">Programı tamamlayanlar <strong>"İstanbulluluk Kartı"</strong>na sahip olur. Bu kart;</p>
+      <ul style="margin-left:20px;margin-top:10px;line-height:2;" data-i18n-html="vizyon.card2.list"></ul>
+    </div>
+  </div>
+</section>
+
+<section id="akademik-kadro" class="bg-dark-section">
+  <div class="container">
+    <span class="eyebrow text-center" style="display:block;" data-i18n="kadro.eyebrow">Akademik Yapı</span>
+    <h2 class="section-title reveal" data-i18n="kadro.title">Danışma Kurulu, Bilim Kurulu ve Eğitim Kadrosu</h2>
+    <div class="rule"></div>
+
+    <div class="grid-2">
+      <div class="card reveal" style="background:linear-gradient(135deg,#1c2740 0%,#0e1626 100%);color:#fff;border:1px solid rgba(201,162,75,.3);">
+        <h3 style="color:var(--gold-bright) !important;"><span data-i18n="kadro.danisma.title">✦ Danışma Kurulu</span></h3>
+        <ul class="reg-list" data-i18n-html="kadro.danisma.list"></ul>
+      </div>
+      <div class="card reveal" style="background:linear-gradient(135deg,#1c2740 0%,#0e1626 100%);color:#fff;border:1px solid rgba(201,162,75,.3);">
+        <h3 style="color:var(--gold-bright) !important;"><span data-i18n="kadro.bilim.title">✦ Bilim Kurulu</span></h3>
+        <ul class="reg-list" data-i18n-html="kadro.bilim.list"></ul>
+      </div>
+    </div>
+
+    <div class="curriculum-intro reveal mt-20" style="background:rgba(255,255,255,.05);border-color:rgba(201,162,75,.22);">
+      <h4 data-i18n="kadro.egitim.title" style="color:var(--gold-bright);">Eğitim Kadrosu</h4>
+      <p style="margin-bottom:14px;color:#cdd4e5;" data-i18n="kadro.egitim.desc">Program, aşağıdaki alanlarda uzmanlaşmış akademisyen ve uzmanların bilgi birikimiyle şekillenmiştir. Kadronun bir kısmı doğrudan ders anlatımından, bir kısmı akademik danışmanlıktan sorumludur.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" data-i18n-html="kadro.egitim.chips"></div>
+    </div>
+
+    <div class="curriculum-intro reveal mt-20" style="background:rgba(255,255,255,.05);border-color:rgba(201,162,75,.22);">
+      <h4 data-i18n="kadro.brans.title" style="color:var(--gold-bright);">Eğitim Branşları</h4>
+      <p style="margin-bottom:14px;color:#cdd4e5;" data-i18n="kadro.brans.desc">Müfredat, İstanbul kültürünü şu ihtisas alanlarına ayırarak ele alır — bu branşlar, mevcut Modül I-II-III yapısının tematik alt başlıklarını oluşturur:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" data-i18n-html="kadro.brans.chips"></div>
     </div>
   </div>
 </section>
@@ -1462,6 +1532,19 @@ const MODULE_PHILOSOPHY = {
   "tr": {
     "brand.sub": "School of Istanbul",
     "nav.paydaslar": "Paydaşlar",
+    "nav.kadro": "Akademik Kadro",
+    "kadro.eyebrow": "Akademik Yapı",
+    "kadro.title": "Danışma Kurulu, Bilim Kurulu ve Eğitim Kadrosu",
+    "kadro.danisma.title": "✦ Danışma Kurulu",
+    "kadro.danisma.list": "<li>İstanbul Valisi</li><li>İstanbul Büyükşehir Belediye Başkanı</li><li>TÜRSAB Başkanı</li><li>Fatih Belediye Başkanı</li><li>İl Kültür ve Turizm Müdürü</li><li>Vakıflar Bölge Müdürü</li>",
+    "kadro.bilim.title": "✦ Bilim Kurulu",
+    "kadro.bilim.list": "<li>Prof. Dr. İlber Ortaylı</li><li>Prof. Dr. Ümit Meriç</li><li>Prof. Dr. Amir Pasiç</li><li>Prof. Dr. Mustafa Kaçar</li><li>Levent Erden</li>",
+    "kadro.egitim.title": "Eğitim Kadrosu",
+    "kadro.egitim.desc": "Program, aşağıdaki alanlarda uzmanlaşmış akademisyen ve uzmanların bilgi birikimiyle şekillenmiştir. Kadronun bir kısmı doğrudan ders anlatımından, bir kısmı akademik danışmanlıktan sorumludur.",
+    "kadro.egitim.chips": "<span class='meta-tag'>Prof. Dr. Mustafa Kaçar — Bilim Tarihi</span><span class='meta-tag'>Prof. Dr. Ahmet Kal'a — Sosyal İktisat Tarihi</span><span class='meta-tag'>Prof. Dr. Amir Pasiç — Şehir Planlama</span><span class='meta-tag'>Prof. Dr. Selçuk Mülayim — Sanat Tarihi</span><span class='meta-tag'>Prof. Dr. Yavuz Cezar — İstanbul Tarihi</span><span class='meta-tag'>Prof. Dr. Suraiya Faroqhi — Sosyal Tarih</span><span class='meta-tag'>Prof. Dr. İlber Ortaylı — Tarih</span><span class='meta-tag'>Prof. Dr. Mehmet Özsait — Arkeoloji</span><span class='meta-tag'>Prof. Dr. Saadettin Ökten — Sanat Tarihi</span><span class='meta-tag'>Prof. Dr. Uğur Tanyeli — Mimarlık Tarihi</span><span class='meta-tag'>Prof. Dr. İskender Pala — Kültür</span><span class='meta-tag'>Prof. Dr. Sait Başaran — Arkeoloji</span><span class='meta-tag'>Prof. Dr. Sait Öztürk — Tarih</span><span class='meta-tag'>Prof. Dr. Nurhan Atasoy — Minyatür</span><span class='meta-tag'>Prof. Dr. Gül İrepoğlu — Sanat Tarihi</span><span class='meta-tag'>Prof. Dr. Ahmet Emre Bilgili — Kültür</span><span class='meta-tag'>Doç. Dr. Zeynep Ertuğ — Tarih</span><span class='meta-tag'>Doç. Dr. Engin Akyürek — Arkeoloji-Sanat Tarihi</span><span class='meta-tag'>Doç. Dr. Melih Arıcan — Fotoğrafçılık</span><span class='meta-tag'>Yrd. Doç. Dr. Gülsün Tanyeli — Mimarlık Tarihi</span><span class='meta-tag'>Yrd. Doç. Dr. T. Ahmet Ertek — Coğrafya</span><span class='meta-tag'>Yrd. Doç. Dr. Ahmet Vefa Çobanoğlu — Sanat Tarihi</span><span class='meta-tag'>Dr. Melda Ermiş — Sanat Tarihi</span><span class='meta-tag'>Mert Sandalcı — Koleksiyon</span><span class='meta-tag'>Veli Şirin — Tarih</span><span class='meta-tag'>M. Sabri Koz — İstanbul Folkloru</span><span class='meta-tag'>Sunay Akın — Kültür</span><span class='meta-tag'>Dr. Nezih Başgelen — Arkeoloji-Sanat Tarihi</span>",
+    "kadro.brans.title": "Eğitim Branşları",
+    "kadro.brans.desc": "Müfredat, İstanbul kültürünü şu ihtisas alanlarına ayırarak ele alır — bu branşlar, mevcut Modül I-II-III yapısının tematik alt başlıklarını oluşturur:",
+    "kadro.brans.chips": "<span class='meta-tag'>İstanbul ve Aktüel Sanat</span><span class='meta-tag'>İstanbul Halk Kültürü</span><span class='meta-tag'>Arkeoloji</span><span class='meta-tag'>Sanat Tarihi</span><span class='meta-tag'>İstanbul'un Mimarisi</span><span class='meta-tag'>İstanbul Coğrafyası</span><span class='meta-tag'>İstanbul Çevre, Deniz ve Su</span><span class='meta-tag'>İstanbul Müzeleri</span><span class='meta-tag'>İstanbul ve İş Dünyası</span><span class='meta-tag'>Temel Grafik, Desen ve Mimari Çizim</span><span class='meta-tag'>Maddi Olmayan Kültür Varlıkları</span><span class='meta-tag'>Temel Fotoğrafçılık</span><span class='meta-tag'>Temel Rehberlik</span>",
     "nav.login": "Giriş Yap",
     "nav.register": "Kayıt Ol",
     "nav.panel": "Panelim",
@@ -1469,7 +1552,7 @@ const MODULE_PHILOSOPHY = {
     "nav.vizyon": "Vizyon", "nav.ekonomi": "Yeni Sektör", "nav.mufredat": "Müfredat",
     "nav.kesif": "Keşif Turları", "nav.yonetmelik": "Yönetmelik", "nav.hesaplayici": "Hesaplayıcı",
     "hero.eyebrow": "Şehrin Hafızası, İnsanlığın Mirası",
-    "hero.title": "Bir Şehri Okumak, Dünyayı Anlamaktır",
+    "hero.title": "İstanbullu Olmak, Kültürlü Olmaktır",
     "hero.desc": "İstanbul Keşif Okulu; şehrin arkeolojik, sosyolojik, tarihi ve kültürel katmanlarını sığ bir turistik gezi anlayışından kurtarıp, akademik bir disiplin ve yepyeni bir meslek dalı olan <strong style=\"color:var(--gold-bright)\">\"Şehir Kültürü Uzmanlığı\"</strong>na dönüştüren dünyadaki ilk sivil akademi modelidir.",
     "hero.badge": "İstanbulluluk Sertifikası",
     "hero.patronage": "FSMVÜ Ayasofya Kampüsü Akademik Himayesinde",
@@ -1485,12 +1568,20 @@ const MODULE_PHILOSOPHY = {
     "paydas.c3.desc": "Müze, ören yeri ve kültürel miras alanlarına eğitim amaçlı erişim ile keşif turlarının etkinlik koordinasyonunu destekler.",
     "paydas.c4.title": "Vakıflar Genel Müdürlüğü",
     "paydas.c4.desc": "Cami, külliye, sebil ve çeşme gibi vakıf eserlerine eğitim amaçlı erişim ile koruma bilinci çalışmalarında iş birliği sağlar.",
+    "paydas.other.title": "Diğer Paydaşlarımız",
+    "paydas.other.desc": "Program, kuruluşundan bu yana aşağıdaki kamu kurumu, sivil toplum kuruluşu ve özel sektör temsilcisinin desteği ve iş birliğiyle güçlenmiştir:",
     "vizyon.eyebrow": "Konum & Vizyon",
     "vizyon.title": "Dünyadaki Yeri ve Emsalsiz Vizyonu",
     "vizyon.hb.title": "Global Bir Paradigma: \"School of Istanbul\"",
     "vizyon.hb.desc": "Dünyada \"Urban Discovery\" başlığı altında eğitim veren kurumlar genellikle K-12 seviyesinde şehri bir \"laboratuvar\" olarak kullanan okullardır. <strong style=\"color:var(--gold-bright)\">İstanbul Keşif Okulu ise yepyeni bir paradigmadır.</strong> Şehri eğitimin bir aracı değil, doğrudan eğitimin kendisi olarak konumlandırır.",
-    "vizyon.card1.title": "✦ Neden Bu Proje?",
-    "vizyon.card1.list": "<li><strong>Şehir Hafızasını Kurtarmak:</strong> İstanbulluluk bilincini yeniden inşa etmek.</li><li><strong>Derinlikli Aktarım:</strong> Ezberlenmiş bilgilerin ötesine geçmek.</li><li><strong>Koruma Bilinci:</strong> Eğitilen bireyi şehrin gönüllü muhafızı yapmak.</li>",
+    "vizyon.card1.title": "✦ Amacımız",
+    "vizyon.card1.list": "<li><strong>Şehir Kültürü Uzmanlığı</strong> adı altında yeni bir meslek dalı oluşturmak.</li><li><strong>İstanbulluluk bilinci</strong> oluşturmak.</li><li>İstanbul'u en iyi şekilde dünyaya anlatmak.</li><li>İstanbul'un kültür varlıklarını keşfetmek ve koruma altına almak.</li><li>Yeni nesil İstanbul rehberlerinin yetişmesine katkıda bulunmak.</li>",
+    "vizyon.misyon.title": "✦ Misyonumuz",
+    "vizyon.misyon.body": "İstanbul Keşif Okulu; İstanbul Keşif Dergisi, İstanbul turları ile diğer medya ve basın organlarını kullanarak İstanbul'u keşfetmeyi, İstanbul ile ilgili araştırmaları derinleştirmeyi, elde edilen bilgileri geniş kitlelerle paylaşmayı ve yurt içi-yurt dışından gelen kişilerde İstanbul bilincini oluşturup artırmayı misyon edinir.",
+    "vizyon.kapsam.title": "✦ Kapsamımız",
+    "vizyon.kapsam.body": "İstanbul odaklı, yenilikçi bir okul olan İstanbul Keşif Okulu, İstanbul'da yaşayan veya farklı amaçlarla İstanbul'a gelmiş yerli ve yabancı kişilerin şehri keşfetmelerini sağlar. Programlar arkeolojik, jeolojik, tarihi, sanatsal, doğal, sosyal ve dini zenginlikler gibi kültürün bütün unsurlarını kapsayacak şekilde tasarlanmıştır.",
+    "vizyon.hedef.title": "✦ Hedef Kitlemiz",
+    "vizyon.hedef.list": "<li>İstanbul halkı (emekli ve ev hanımları dahil)</li><li>Öğrenciler ve öğretmenler</li><li>Doktorlar ve serbest meslek sahipleri</li><li>Yabancı öğrenciler ve yabancı misyon temsilcileri</li><li>Belediye mensupları</li><li>İstanbul şehir kültürü ile ilgili uzmanlaşmak isteyen araştırmacılar</li>",
     "vizyon.card2.title": "✦ İstanbulluluk Sertifikası",
     "vizyon.card2.intro": "Programı tamamlayanlar <strong>\"İstanbulluluk Kartı\"</strong>na sahip olur. Bu kart;",
     "vizyon.card2.list": "<li>Akademik çevrelerde \"Şehir Kültürü Uzmanı\" statüsü.</li><li>Kültür hayatında \"Kültür Elçisi\" statüsü.</li><li>Yurt dışı temsilciliklerinde danışmanlık potansiyeli.</li>",
@@ -1619,7 +1710,7 @@ const MODULE_PHILOSOPHY = {
     "login.switch": "Hesabınız yok mu?",
     "login.switchLink": "Kayıt olun",
     "login.err": "E-posta veya şifre hatalı.",
-    "login.demoStaff": "Demo öğretmen/yönetici hesapları: elif.demir@fsmvu.demo, mehmet.kaya@fsmvu.demo, zeynep.aydin@fsmvu.demo, can.oz@fsmvu.demo, ayse.yilmaz@fsmvu.demo — şifre: 1234",
+    "login.demoStaff": "Eğitmen/yönetici hesapları: mehmet.ozsait@fsmvu.edu.tr, ahmet.kala@fsmvu.edu.tr, ilber.ortayli@fsmvu.edu.tr, engin.akyurek@fsmvu.edu.tr (keşif turları), ayse.yilmaz@fsmvu.demo (koordinatör) — şifre: 1234",
     "login.demoStudent": "Henüz hesabınız yoksa önce Kayıt Ol ile bir öğrenci hesabı oluşturun.",
 
     "sdash.eyebrow": "Öğrenci Paneli",
@@ -1779,6 +1870,19 @@ const MODULE_PHILOSOPHY = {
   "en": {
     "brand.sub": "School of Istanbul",
     "nav.paydaslar": "Stakeholders",
+    "nav.kadro": "Academic Staff",
+    "kadro.eyebrow": "Academic Structure",
+    "kadro.title": "Advisory Board, Science Board and Teaching Staff",
+    "kadro.danisma.title": "✦ Advisory Board",
+    "kadro.danisma.list": "<li>Governor of Istanbul</li><li>Mayor of Istanbul Metropolitan Municipality</li><li>President of TÜRSAB</li><li>Mayor of Fatih Municipality</li><li>Provincial Director of Culture and Tourism</li><li>Regional Director of Foundations</li>",
+    "kadro.bilim.title": "✦ Science Board",
+    "kadro.bilim.list": "<li>Prof. Dr. İlber Ortaylı</li><li>Prof. Dr. Ümit Meriç</li><li>Prof. Dr. Amir Pasiç</li><li>Prof. Dr. Mustafa Kaçar</li><li>Levent Erden</li>",
+    "kadro.egitim.title": "Teaching Staff",
+    "kadro.egitim.desc": "The programme is shaped by the expertise of academics and specialists in the following fields. Some are directly responsible for teaching lessons, others for academic advisory.",
+    "kadro.egitim.chips": "<span class='meta-tag'>Prof. Dr. Mustafa Kaçar — History of Science</span><span class='meta-tag'>Prof. Dr. Ahmet Kal'a — Social & Economic History</span><span class='meta-tag'>Prof. Dr. Amir Pasiç — Urban Planning</span><span class='meta-tag'>Prof. Dr. Selçuk Mülayim — Art History</span><span class='meta-tag'>Prof. Dr. Yavuz Cezar — History of Istanbul</span><span class='meta-tag'>Prof. Dr. Suraiya Faroqhi — Social History</span><span class='meta-tag'>Prof. Dr. İlber Ortaylı — History</span><span class='meta-tag'>Prof. Dr. Mehmet Özsait — Archaeology</span><span class='meta-tag'>Prof. Dr. Saadettin Ökten — Art History</span><span class='meta-tag'>Prof. Dr. Uğur Tanyeli — History of Architecture</span><span class='meta-tag'>Prof. Dr. İskender Pala — Culture</span><span class='meta-tag'>Prof. Dr. Sait Başaran — Archaeology</span><span class='meta-tag'>Prof. Dr. Sait Öztürk — History</span><span class='meta-tag'>Prof. Dr. Nurhan Atasoy — Miniature Art</span><span class='meta-tag'>Prof. Dr. Gül İrepoğlu — Art History</span><span class='meta-tag'>Prof. Dr. Ahmet Emre Bilgili — Culture</span><span class='meta-tag'>Assoc. Prof. Dr. Zeynep Ertuğ — History</span><span class='meta-tag'>Assoc. Prof. Dr. Engin Akyürek — Archaeology & Art History</span><span class='meta-tag'>Assoc. Prof. Dr. Melih Arıcan — Photography</span><span class='meta-tag'>Asst. Prof. Dr. Gülsün Tanyeli — History of Architecture</span><span class='meta-tag'>Asst. Prof. Dr. T. Ahmet Ertek — Geography</span><span class='meta-tag'>Asst. Prof. Dr. Ahmet Vefa Çobanoğlu — Art History</span><span class='meta-tag'>Dr. Melda Ermiş — Art History</span><span class='meta-tag'>Mert Sandalcı — Collections</span><span class='meta-tag'>Veli Şirin — History</span><span class='meta-tag'>M. Sabri Koz — Istanbul Folklore</span><span class='meta-tag'>Sunay Akın — Culture</span><span class='meta-tag'>Dr. Nezih Başgelen — Archaeology & Art History</span>",
+    "kadro.brans.title": "Subject Tracks",
+    "kadro.brans.desc": "The curriculum treats Istanbul's culture through the following specialty tracks — these form the thematic sub-headings of the current Module I-II-III structure:",
+    "kadro.brans.chips": "<span class='meta-tag'>Istanbul & Contemporary Art</span><span class='meta-tag'>Istanbul Folk Culture</span><span class='meta-tag'>Archaeology</span><span class='meta-tag'>Art History</span><span class='meta-tag'>Istanbul's Architecture</span><span class='meta-tag'>Geography of Istanbul</span><span class='meta-tag'>Istanbul Environment, Sea & Water</span><span class='meta-tag'>Museums of Istanbul</span><span class='meta-tag'>Istanbul & Business World</span><span class='meta-tag'>Basic Graphic Design & Architectural Drawing</span><span class='meta-tag'>Intangible Cultural Heritage</span><span class='meta-tag'>Basic Photography</span><span class='meta-tag'>Basic Guiding</span>",
     "nav.login": "Log In",
     "nav.register": "Sign Up",
     "nav.panel": "My Panel",
@@ -1786,7 +1890,7 @@ const MODULE_PHILOSOPHY = {
     "nav.vizyon": "Vision", "nav.ekonomi": "New Sector", "nav.mufredat": "Curriculum",
     "nav.kesif": "Exploration Tours", "nav.yonetmelik": "Regulation", "nav.hesaplayici": "Calculator",
     "hero.eyebrow": "The Memory of the City, The Heritage of Humanity",
-    "hero.title": "To Read a City is to Understand the World",
+    "hero.title": "To Be an Istanbulite Is to Be Cultured",
     "hero.desc": "The School of Istanbul liberates the city's archaeological, sociological, historical and cultural layers from shallow touristic tours, transforming them into an academic discipline and a brand new profession: <strong style=\"color:var(--gold-bright)\">\"Urban-Culture Expertise\"</strong>.",
     "hero.badge": "Istanbul Citizenship Certificate",
     "hero.patronage": "Under the Academic Patronage of FSMVÜ Hagia Sophia Campus",
@@ -1802,12 +1906,20 @@ const MODULE_PHILOSOPHY = {
     "paydas.c3.desc": "Supports educational access to museums, archaeological sites, and cultural heritage areas, and coordinates exploration-tour logistics.",
     "paydas.c4.title": "General Directorate of Foundations",
     "paydas.c4.desc": "Provides cooperation on educational access to foundation assets such as mosques, complexes, fountains, and sebils, and on conservation-awareness work.",
+    "paydas.other.title": "Our Other Stakeholders",
+    "paydas.other.desc": "Since its founding, the programme has been strengthened by the support and cooperation of the following public institutions, civil-society organisations and private-sector representatives:",
     "vizyon.eyebrow": "Standing & Vision",
     "vizyon.title": "Global Standing & Unparalleled Vision",
     "vizyon.hb.title": "A Global Paradigm: \"School of Istanbul\"",
     "vizyon.hb.desc": "While other \"Urban Discovery\" institutions treat the city as a K-12 laboratory, <strong style=\"color:var(--gold-bright)\">the School of Istanbul is a new paradigm.</strong> The city is not a tool for education; it is the education itself.",
-    "vizyon.card1.title": "✦ Why This Project?",
-    "vizyon.card1.list": "<li><strong>Urban Memory:</strong> Reconstructing Istanbulite consciousness.</li><li><strong>Deep Transfer:</strong> Beyond memorized information.</li><li><strong>Conservation:</strong> Making the educated individual a voluntary guardian.</li>",
+    "vizyon.card1.title": "✦ Our Objectives",
+    "vizyon.card1.list": "<li>Establishing a new profession under the name <strong>Urban-Culture Expertise</strong>.</li><li>Building a sense of <strong>Istanbulite consciousness</strong>.</li><li>Presenting Istanbul to the world in the best possible way.</li><li>Discovering and protecting Istanbul's cultural assets.</li><li>Contributing to the training of a new generation of Istanbul guides.</li>",
+    "vizyon.misyon.title": "✦ Our Mission",
+    "vizyon.misyon.body": "The School of Istanbul's mission is to explore Istanbul through the Istanbul Discovery Magazine, Istanbul tours and other media and press outlets; to deepen research on Istanbul; to share the resulting knowledge with wide audiences; and to build and increase Istanbul awareness among people from Turkey and abroad.",
+    "vizyon.kapsam.title": "✦ Our Scope",
+    "vizyon.kapsam.body": "As an innovative, Istanbul-focused school, the School of Istanbul enables local and foreign residents of, or visitors to, Istanbul to discover the city. Its programmes are designed to cover every element of culture — archaeological, geological, historical, artistic, natural, social and religious riches alike.",
+    "vizyon.hedef.title": "✦ Our Target Audience",
+    "vizyon.hedef.list": "<li>Istanbul residents (including retirees and homemakers)</li><li>Students and teachers</li><li>Doctors and professionals</li><li>Foreign students and foreign mission representatives</li><li>Municipal staff</li><li>Researchers seeking to specialize in Istanbul's urban culture</li>",
     "vizyon.card2.title": "✦ Istanbul Citizenship Certificate",
     "vizyon.card2.intro": "Graduates receive the <strong>\"Istanbul Citizenship Card\"</strong> which grants:",
     "vizyon.card2.list": "<li>\"Urban-Culture Expert\" status in academic circles.</li><li>\"Culture Ambassador\" status.</li><li>Consultancy potential abroad.</li>",
@@ -1936,7 +2048,7 @@ const MODULE_PHILOSOPHY = {
     "login.switch": "Don't have an account?",
     "login.switchLink": "Sign up",
     "login.err": "Incorrect email or password.",
-    "login.demoStaff": "Demo instructor/admin accounts: elif.demir@fsmvu.demo, mehmet.kaya@fsmvu.demo, zeynep.aydin@fsmvu.demo, can.oz@fsmvu.demo, ayse.yilmaz@fsmvu.demo — password: 1234",
+    "login.demoStaff": "Instructor/admin accounts: mehmet.ozsait@fsmvu.edu.tr, ahmet.kala@fsmvu.edu.tr, ilber.ortayli@fsmvu.edu.tr, engin.akyurek@fsmvu.edu.tr (exploration tours), ayse.yilmaz@fsmvu.demo (coordinator) — password: 1234",
     "login.demoStudent": "If you don't have an account yet, use Sign Up to create a student account first.",
 
     "sdash.eyebrow": "Student Panel",
