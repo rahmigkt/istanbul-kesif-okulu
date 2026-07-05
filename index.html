@@ -526,6 +526,7 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
       </div>
       <div class="auth-controls" id="authControlsLoggedIn" style="display:none;">
         <span class="btn-ghost" style="border-style:dashed;cursor:default;" id="loggedInName">—</span>
+        <button class="btn-ghost" onclick="openNotificationPanel()" style="position:relative;" id="notifBellBtn">🔔<span id="notifBadge" style="display:none;position:absolute;top:-4px;right:-4px;background:var(--tile-coral);color:#fff;border-radius:50%;font-size:0.65rem;padding:1px 5px;font-family:var(--sans);">0</span></button>
         <button class="btn-cta" onclick="openDashboard()" data-i18n="nav.panel">Panelim</button>
         <button class="btn-ghost" onclick="logout()" data-i18n="nav.logout">Çıkış</button>
       </div>
@@ -1134,6 +1135,73 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
   </div>
 </div>
 
+<!-- NOTIFICATIONS MODAL -->
+<div id="notifModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 data-i18n="notif.title">Bildirimler</h3></div>
+      <button class="close" onclick="closeGenericModal('notifModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <button class="link-btn" style="margin-bottom:12px;" onclick="markAllNotificationsRead()" data-i18n="notif.markAllRead">Tümünü okundu işaretle</button>
+      <div id="notifList"><p class="small-note">Yükleniyor…</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN: STUDENT MANAGEMENT MODAL -->
+<div id="adminStudentsModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="admin.students.title">Öğrenci Yönetimi</h3></div>
+      <button class="close" onclick="closeGenericModal('adminStudentsModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="search-row" style="max-width:none;margin-bottom:16px;">
+        <input type="text" id="adminStudentSearch" oninput="loadAdminStudents()" data-i18n-placeholder="admin.students.search">
+      </div>
+      <button class="btn-ghost" style="margin-bottom:16px;color:var(--ink);border-color:var(--border-color);" onclick="exportStudentsCSV()" data-i18n="admin.students.export">⬇ CSV olarak indir</button>
+      <div id="adminStudentsList"><p class="small-note">Yükleniyor…</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN: CREATE STAFF MODAL -->
+<div id="createStaffModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 data-i18n="admin.staff.createTitle">Yeni Eğitmen/Yönetici Ekle</h3></div>
+      <button class="close" onclick="closeGenericModal('createStaffModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="admin.staff.nameTr">Ad Soyad (TR)</label><input type="text" id="newStaffNameTr"></div>
+        <div class="form-group"><label data-i18n="admin.staff.nameEn">Ad Soyad (EN)</label><input type="text" id="newStaffNameEn"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="admin.staff.titleTr">Unvan (TR)</label><input type="text" id="newStaffTitleTr"></div>
+        <div class="form-group"><label data-i18n="admin.staff.titleEn">Unvan (EN)</label><input type="text" id="newStaffTitleEn"></div>
+      </div>
+      <div class="form-group"><label data-i18n="admin.staff.email">E-posta</label><input type="email" id="newStaffEmail"></div>
+      <div class="form-group"><label data-i18n="admin.staff.pass">Şifre</label><input type="text" id="newStaffPass" placeholder="Geçici şifre belirleyin"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label data-i18n="admin.staff.role">Rol</label>
+          <select id="newStaffRole"><option value="instructor">Eğitmen</option><option value="admin">Yönetici</option></select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="admin.staff.module">Sorumlu Modül</label>
+          <select id="newStaffModule"><option value="1">Modül I</option><option value="2">Modül II</option><option value="3">Modül III</option></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" id="newStaffOnlyExploration" style="width:auto;margin-right:6px;"> <span data-i18n="admin.staff.onlyExploration">Sadece keşif turları sorumlusu</span></label>
+      </div>
+      <button class="btn-cta" style="width:100%;padding:12px;" onclick="createStaffAccount()" data-i18n="admin.staff.submit">Hesabı Oluştur</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ================= SUPABASE CLIENT ================= */
@@ -1499,7 +1567,31 @@ const MODULE_PHILOSOPHY = {
     "staff.excuses.approve": "Onayla",
     "staff.excuses.reject": "Reddet",
     "staff.excuses.watched": "Video İzleme",
-    "staff.createSlot": "+ Kontenjan Oluştur"
+    "staff.createSlot": "+ Kontenjan Oluştur",
+    "notif.title": "Bildirimler",
+    "notif.markAllRead": "Tümünü okundu işaretle",
+    "notif.empty": "Henüz bildiriminiz yok.",
+    "admin.students.title": "Öğrenci Yönetimi",
+    "admin.students.search": "İsim veya e-posta ile ara...",
+    "admin.students.export": "⬇ CSV olarak indir",
+    "admin.students.freeze": "Dondur",
+    "admin.students.unfreeze": "Aktif Et",
+    "admin.students.delete": "Sil",
+    "admin.students.deleteConfirm": "Bu öğrenciyi ve tüm kayıtlarını (yoklama, ödeme, değerlendirme) kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.",
+    "admin.students.frozen": "Donduruldu",
+    "admin.staff.manage": "Öğrenci Yönetimi",
+    "admin.staff.createTitle": "Yeni Eğitmen/Yönetici Ekle",
+    "admin.staff.nameTr": "Ad Soyad (TR)",
+    "admin.staff.nameEn": "Ad Soyad (EN)",
+    "admin.staff.titleTr": "Unvan (TR)",
+    "admin.staff.titleEn": "Unvan (EN)",
+    "admin.staff.email": "E-posta",
+    "admin.staff.pass": "Şifre",
+    "admin.staff.role": "Rol",
+    "admin.staff.module": "Sorumlu Modül",
+    "admin.staff.onlyExploration": "Sadece keşif turları sorumlusu",
+    "admin.staff.submit": "Hesabı Oluştur",
+    "admin.staff.add": "+ Eğitmen/Yönetici Ekle"
   },
   "en": {
     "brand.sub": "School of Istanbul",
@@ -1736,7 +1828,31 @@ const MODULE_PHILOSOPHY = {
     "staff.excuses.approve": "Approve",
     "staff.excuses.reject": "Reject",
     "staff.excuses.watched": "Video Watched",
-    "staff.createSlot": "+ Create Slot"
+    "staff.createSlot": "+ Create Slot",
+    "notif.title": "Notifications",
+    "notif.markAllRead": "Mark all as read",
+    "notif.empty": "You have no notifications yet.",
+    "admin.students.title": "Student Management",
+    "admin.students.search": "Search by name or email...",
+    "admin.students.export": "⬇ Download as CSV",
+    "admin.students.freeze": "Freeze",
+    "admin.students.unfreeze": "Unfreeze",
+    "admin.students.delete": "Delete",
+    "admin.students.deleteConfirm": "Are you sure you want to permanently delete this student and all their records (attendance, payments, ratings)? This cannot be undone.",
+    "admin.students.frozen": "Frozen",
+    "admin.staff.manage": "Student Management",
+    "admin.staff.createTitle": "Add New Instructor/Admin",
+    "admin.staff.nameTr": "Full Name (TR)",
+    "admin.staff.nameEn": "Full Name (EN)",
+    "admin.staff.titleTr": "Title (TR)",
+    "admin.staff.titleEn": "Title (EN)",
+    "admin.staff.email": "Email",
+    "admin.staff.pass": "Password",
+    "admin.staff.role": "Role",
+    "admin.staff.module": "Responsible Module",
+    "admin.staff.onlyExploration": "Exploration tours coordinator only",
+    "admin.staff.submit": "Create Account",
+    "admin.staff.add": "+ Add Instructor/Admin"
   }
 }
 </script>
@@ -2238,6 +2354,134 @@ function refreshAuthUI(){
   out.style.display = 'none';
   inn.style.display = '';
   document.getElementById('loggedInName').textContent = name;
+  refreshNotifBadge();
+}
+
+/* ---------- notifications ---------- */
+async function refreshNotifBadge(){
+  const session = getSession();
+  if(!session) return;
+  const { data } = await db.rpc('rpc_get_notifications', { p_role: session.role, p_id: session.id });
+  const unread = (data||[]).filter(n=>!n.is_read).length;
+  const badge = document.getElementById('notifBadge');
+  if(unread > 0){ badge.style.display = ''; badge.textContent = unread > 9 ? '9+' : unread; }
+  else { badge.style.display = 'none'; }
+}
+async function openNotificationPanel(){
+  const session = getSession();
+  if(!session) return;
+  openGenericModal('notifModal');
+  const listEl = document.getElementById('notifList');
+  listEl.innerHTML = '<p class="small-note">Yükleniyor…</p>';
+  const { data } = await db.rpc('rpc_get_notifications', { p_role: session.role, p_id: session.id });
+  if(!data || !data.length){
+    listEl.innerHTML = '<p class="small-note">'+t('notif.empty')+'</p>';
+    return;
+  }
+  listEl.innerHTML = data.map(n=>{
+    const dt = new Date(n.created_at).toLocaleString(currentLang==='tr'?'tr-TR':'en-US');
+    return '<div class="dash-list-item" style="'+(n.is_read?'opacity:0.6;':'border-color:var(--gold);')+'">'+
+      '<div class="info"><div class="title">'+(n.is_read?'':'🔵 ')+n.title+'</div><div class="sub">'+(n.message||'')+'</div><div class="small-note">'+dt+'</div></div>'+
+    '</div>';
+  }).join('');
+  await db.rpc('rpc_mark_all_notifications_read', { p_role: session.role, p_id: session.id });
+  refreshNotifBadge();
+}
+async function markAllNotificationsRead(){
+  const session = getSession();
+  if(!session) return;
+  await db.rpc('rpc_mark_all_notifications_read', { p_role: session.role, p_id: session.id });
+  await openNotificationPanel();
+}
+setInterval(refreshNotifBadge, 30000);
+
+/* ---------- admin: student management ---------- */
+async function openAdminStudentsModal(){
+  openGenericModal('adminStudentsModal');
+  document.getElementById('adminStudentSearch').value = '';
+  await loadAdminStudents();
+}
+async function loadAdminStudents(){
+  const session = getSession();
+  const search = document.getElementById('adminStudentSearch').value.trim();
+  const listEl = document.getElementById('adminStudentsList');
+  const { data, error } = await db.rpc('rpc_admin_list_students', { p_admin_id: session.id, p_search: search || null });
+  if(error){ listEl.innerHTML = '<p class="small-note">Hata: '+error.message+'</p>'; return; }
+  window.__adminStudentsCache = data || [];
+  if(!data || !data.length){ listEl.innerHTML = '<p class="small-note">Öğrenci bulunamadı.</p>'; return; }
+  listEl.innerHTML = data.map(s=>{
+    const dt = new Date(s.kayit_tarihi).toLocaleDateString(currentLang==='tr'?'tr-TR':'en-US');
+    return '<div class="dash-list-item"><div class="info">'+
+      '<div class="title">'+s.ad_soyad+' '+(s.is_active===false?'<span class="chk-badge pending">'+t('admin.students.frozen')+'</span>':'')+'</div>'+
+      '<div class="sub">'+s.email+' · '+programLabel(s.program,currentLang)+' · '+dt+'</div></div>'+
+      '<div class="dash-actions">'+
+        '<button class="btn-ghost" style="font-size:0.7rem;padding:6px 10px;color:var(--ink);border-color:var(--border-color);" onclick="toggleStudentActive(\''+s.id+'\','+(s.is_active!==false)+')">'+(s.is_active===false?t('admin.students.unfreeze'):t('admin.students.freeze'))+'</button>'+
+        '<button class="btn-ghost" style="font-size:0.7rem;padding:6px 10px;color:var(--tile-coral);border-color:var(--tile-coral);" onclick="deleteStudentAccount(\''+s.id+'\')">'+t('admin.students.delete')+'</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+async function toggleStudentActive(studentId, currentlyActive){
+  const session = getSession();
+  await db.rpc('rpc_admin_set_student_active', { p_admin_id: session.id, p_student_id: studentId, p_active: !currentlyActive });
+  await loadAdminStudents();
+}
+async function deleteStudentAccount(studentId){
+  if(!confirm(t('admin.students.deleteConfirm'))) return;
+  const session = getSession();
+  await db.rpc('rpc_admin_delete_student', { p_admin_id: session.id, p_student_id: studentId });
+  await loadAdminStudents();
+}
+function exportStudentsCSV(){
+  const data = window.__adminStudentsCache || [];
+  if(!data.length){ alert('Dışa aktarılacak öğrenci yok.'); return; }
+  const headers = ['Ad Soyad','E-posta','Telefon','Program','Kayıt Tarihi','Ücret','Ödeme Durumu','Aktif'];
+  const rows = data.map(s=>[s.ad_soyad, s.email, s.telefon||'', s.program, s.kayit_tarihi, s.ucret, s.odeme_durumu, s.is_active===false?'Donduruldu':'Aktif']);
+  const csv = [headers.join(',')].concat(rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','))).join('\n');
+  const blob = new Blob(['\ufeff'+csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'ogrenciler_'+new Date().toISOString().slice(0,10)+'.csv';
+  link.click();
+}
+
+/* ---------- admin: create staff ---------- */
+function openCreateStaffModal(){
+  document.getElementById('newStaffNameTr').value = '';
+  document.getElementById('newStaffNameEn').value = '';
+  document.getElementById('newStaffTitleTr').value = '';
+  document.getElementById('newStaffTitleEn').value = '';
+  document.getElementById('newStaffEmail').value = '';
+  document.getElementById('newStaffPass').value = '';
+  document.getElementById('newStaffOnlyExploration').checked = false;
+  openGenericModal('createStaffModal');
+}
+async function createStaffAccount(){
+  const session = getSession();
+  const payload = {
+    p_admin_id: session.id,
+    p_email: document.getElementById('newStaffEmail').value.trim().toLowerCase(),
+    p_sifre: document.getElementById('newStaffPass').value,
+    p_role: document.getElementById('newStaffRole').value,
+    p_ad_soyad_tr: document.getElementById('newStaffNameTr').value.trim(),
+    p_ad_soyad_en: document.getElementById('newStaffNameEn').value.trim(),
+    p_unvan_tr: document.getElementById('newStaffTitleTr').value.trim(),
+    p_unvan_en: document.getElementById('newStaffTitleEn').value.trim(),
+    p_module_resp: [parseInt(document.getElementById('newStaffModule').value,10)],
+    p_only_exploration: document.getElementById('newStaffOnlyExploration').checked,
+    p_gorevler_tr: [], p_gorevler_en: []
+  };
+  if(!payload.p_email || !payload.p_sifre || !payload.p_ad_soyad_tr){
+    alert(currentLang==='tr'?'Lütfen zorunlu alanları doldurun.':'Please fill in the required fields.');
+    return;
+  }
+  const { error } = await db.rpc('rpc_admin_create_staff', payload);
+  if(error){
+    alert(error.message.includes('EMAIL_EXISTS') ? (currentLang==='tr'?'Bu e-posta zaten kayıtlı.':'This email is already registered.') : ('Hata: '+error.message));
+    return;
+  }
+  closeGenericModal('createStaffModal');
+  alert(currentLang==='tr'?'Hesap oluşturuldu.':'Account created.');
 }
 
 async function openDashboard(){
@@ -2610,6 +2854,10 @@ async function renderStaffDashboard(){
   if(staffMember.role === 'admin' && allStaffOverview){
     html += '<div class="dash-section"><h4>'+t('tdash.adminOverview')+'</h4>';
     html += '<div class="dash-stat-card" style="max-width:220px;margin-bottom:16px;"><div class="num">'+totalStudents+'</div><div class="lbl">'+t('tdash.totalStudents')+'</div></div>';
+    html += '<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">'+
+      '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openAdminStudentsModal()">👥 '+t('admin.staff.manage')+'</button>'+
+      '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openCreateStaffModal()">'+t('admin.staff.add')+'</button>'+
+    '</div>';
     allStaffOverview.forEach(sm=>{
       const a = sm.avg_rating;
       const nm = currentLang==='tr' ? sm.ad_soyad_tr : sm.ad_soyad_en;
