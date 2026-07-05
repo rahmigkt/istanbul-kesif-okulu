@@ -757,6 +757,7 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
     <h2 class="section-title reveal" data-i18n="contact.title">İletişim</h2>
     <div class="rule"></div>
     <p class="section-sub reveal" data-i18n="contact.desc">Program, kayıt tarihleri veya ücretlendirme hakkında sorularınız için aşağıdaki formu doldurun; size en kısa sürede dönüş yapılır.</p>
+    <p class="section-sub reveal" style="margin-top:-30px;">✉️ <a href="mailto:info@schoolofistanbul.com" style="color:var(--gold-bright);text-decoration:underline;">info@schoolofistanbul.com</a></p>
     <div class="calculator reveal" style="max-width:640px;">
       <div id="contactMessage"></div>
       <div class="form-group"><label data-i18n="contact.name">Ad Soyad</label><input type="text" id="contactName"></div>
@@ -777,6 +778,8 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
     <h3 data-i18n="footer.title">İstanbul Keşif Okulu</h3>
     <p data-i18n="footer.tagline">Şehrin Hafızası, İnsanlığın Mirası.</p>
     <p style="margin-top:14px;color:var(--text-on-dark-muted);font-size:0.92rem;" data-i18n="footer.address">FSMVÜ Ayasofya Kampüsü · Fatih, İstanbul</p>
+    <p style="margin-top:6px;color:var(--text-on-dark-muted);font-size:0.92rem;">✉️ <a href="mailto:info@schoolofistanbul.com" style="color:var(--text-on-dark-muted);">info@schoolofistanbul.com</a></p>
+    <p style="margin-top:16px;font-size:0.85rem;"><button class="link-btn" style="color:var(--text-on-dark-muted);" onclick="openGenericModal('privacyModal')" data-i18n="footer.privacyLink">Gizlilik Metni</button> · <button class="link-btn" style="color:var(--text-on-dark-muted);" onclick="openGenericModal('termsModal')" data-i18n="footer.termsLink">Kullanım Şartları</button></p>
     <p style="margin-top:20px;opacity:.6;font-size:0.9rem;" data-i18n="footer.copy">&copy; 2026 İstanbul Keşif Okulu. Tüm hakları saklıdır.</p>
   </div>
 </footer>
@@ -1285,6 +1288,34 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
   </div>
 </div>
 
+<div id="termsModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="terms.title">Kullanım Şartları</h3></div>
+      <button class="close" onclick="closeGenericModal('termsModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div data-i18n-html="terms.body" style="line-height:1.9;"></div>
+      <p class="demo-hint" data-i18n="terms.disclaimer">Bu metin genel bir bilgilendirme taslağıdır ve resmi hukuki danışmanlığın yerini tutmaz. Kurumsal kullanım öncesi bir hukuk danışmanına onaylatılması önerilir.</p>
+    </div>
+  </div>
+</div>
+
+<div id="changePasswordModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 data-i18n="changepass.title">Şifremi Değiştir</h3></div>
+      <button class="close" onclick="closeGenericModal('changePasswordModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="changePassMessage"></div>
+      <div class="form-group"><label data-i18n="changepass.current">Mevcut Şifre</label><input type="password" id="changePassCurrent"></div>
+      <div class="form-group"><label data-i18n="changepass.new">Yeni Şifre</label><input type="password" id="changePassNew" minlength="4"></div>
+      <button class="btn-cta" style="width:100%;padding:12px;" onclick="submitChangePassword()" data-i18n="changepass.submit">Şifremi Güncelle</button>
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN: CONTACT MESSAGES MODAL -->
 <div id="adminContactModal" class="modal">
   <div class="modal-content wide">
@@ -1731,7 +1762,19 @@ const MODULE_PHILOSOPHY = {
     "contact.subject": "Konu",
     "contact.message": "Mesajınız",
     "contact.submit": "Gönder",
-    "contact.success": "Mesajınız iletildi, en kısa sürede dönüş yapılacaktır."
+    "contact.success": "Mesajınız iletildi, en kısa sürede dönüş yapılacaktır.",
+    "footer.privacyLink": "Gizlilik Metni",
+    "footer.termsLink": "Kullanım Şartları",
+    "terms.title": "Kullanım Şartları",
+    "terms.body": "<p><strong>1. Kabul:</strong> Bu siteye kayıt olarak veya kullanarak, aşağıdaki şartları kabul etmiş olursunuz.</p><p><strong>2. Program Katılımı:</strong> Kayıt, İstanbul Keşif Okulu Yönetmeliği'nde belirtilen devam ve başarı şartlarına tabidir. Sertifika hakkı, tüm derslere %100 katılım şartına bağlıdır.</p><p><strong>3. Ödeme:</strong> Kayıt sırasında beyan edilen ücret, seçilen programa göre değişir; iade ve iptal koşulları kurum politikasına göre değerlendirilir.</p><p><strong>4. Davranış:</strong> Katılımcılardan derslerde ve keşif turlarında saygılı ve güvenli bir davranış beklenir.</p><p><strong>5. Değişiklik Hakkı:</strong> Kurum, program içeriğini, takvimini veya ücretini önceden bildirmek kaydıyla değiştirme hakkını saklı tutar.</p>",
+    "terms.disclaimer": "Bu metin genel bir bilgilendirme taslağıdır ve resmi hukuki danışmanlığın yerini tutmaz. Kurumsal kullanım öncesi bir hukuk danışmanına onaylatılması önerilir.",
+    "changepass.button": "Şifremi Değiştir",
+    "changepass.title": "Şifremi Değiştir",
+    "changepass.current": "Mevcut Şifre",
+    "changepass.new": "Yeni Şifre",
+    "changepass.submit": "Şifremi Güncelle",
+    "changepass.success": "Şifreniz güncellendi.",
+    "changepass.wrongCurrent": "Mevcut şifreniz yanlış."
   },
   "en": {
     "brand.sub": "School of Istanbul",
@@ -2036,7 +2079,19 @@ const MODULE_PHILOSOPHY = {
     "contact.subject": "Subject",
     "contact.message": "Your Message",
     "contact.submit": "Send",
-    "contact.success": "Your message has been sent, we will get back to you shortly."
+    "contact.success": "Your message has been sent, we will get back to you shortly.",
+    "footer.privacyLink": "Privacy Notice",
+    "footer.termsLink": "Terms of Use",
+    "terms.title": "Terms of Use",
+    "terms.body": "<p><strong>1. Acceptance:</strong> By registering for or using this site, you accept the following terms.</p><p><strong>2. Programme Participation:</strong> Registration is subject to the attendance and success requirements set out in the School of Istanbul Regulation. Certificate eligibility requires 100% attendance in all lessons.</p><p><strong>3. Payment:</strong> The fee declared at registration varies by chosen programme; refund and cancellation conditions are assessed per institutional policy.</p><p><strong>4. Conduct:</strong> Participants are expected to behave respectfully and safely during lessons and exploration tours.</p><p><strong>5. Right to Change:</strong> The institution reserves the right to modify programme content, schedule, or fees with prior notice.</p>",
+    "terms.disclaimer": "This text is a general informational draft and does not substitute for formal legal counsel. Legal review is recommended before institutional use.",
+    "changepass.button": "Change Password",
+    "changepass.title": "Change Password",
+    "changepass.current": "Current Password",
+    "changepass.new": "New Password",
+    "changepass.submit": "Update Password",
+    "changepass.success": "Your password has been updated.",
+    "changepass.wrongCurrent": "Your current password is incorrect."
   }
 }
 </script>
@@ -2463,6 +2518,30 @@ async function handleRegister(evt){
 let currentLoginRole = 'student';
 let currentEditorPassword = null;
 
+function openChangePasswordModal(){
+  document.getElementById('changePassCurrent').value = '';
+  document.getElementById('changePassNew').value = '';
+  document.getElementById('changePassMessage').innerHTML = '';
+  openGenericModal('changePasswordModal');
+}
+async function submitChangePassword(){
+  const session = getSession();
+  const current = document.getElementById('changePassCurrent').value;
+  const newPass = document.getElementById('changePassNew').value;
+  const msgBox = document.getElementById('changePassMessage');
+  if(!current || newPass.length < 4){
+    msgBox.innerHTML = '<div class="form-error">'+(currentLang==='tr'?'Lütfen mevcut şifrenizi girin ve en az 4 karakterli yeni bir şifre belirleyin.':'Please enter your current password and a new password of at least 4 characters.')+'</div>';
+    return;
+  }
+  const { data, error } = await db.rpc('rpc_change_student_password', { p_student_id: session.id, p_current_password: current, p_new_password: newPass });
+  if(error || !data){
+    msgBox.innerHTML = '<div class="form-error">'+t('changepass.wrongCurrent')+'</div>';
+    return;
+  }
+  msgBox.innerHTML = '<div class="form-success">'+t('changepass.success')+'</div>';
+  setTimeout(()=>closeGenericModal('changePasswordModal'), 1200);
+}
+
 function openForgotPasswordModal(){
   document.getElementById('forgotEmail').value = '';
   document.getElementById('forgotBirth').value = '';
@@ -2790,7 +2869,7 @@ async function renderStudentDashboard(){
   html += '<div class="dash-header"><div class="dash-profile">'+
     '<div class="dash-avatar">'+initials+'</div>'+
     '<div><div class="dash-name">'+student.ad_soyad+'</div><div class="dash-role">'+student.email+'</div></div>'+
-  '</div></div>';
+  '</div><button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openChangePasswordModal()">🔑 '+t('changepass.button')+'</button></div>';
 
   html += '<div class="dash-stats">'+
     '<div class="dash-stat-card"><div class="num">'+programLabel(student.program, currentLang)+'</div><div class="lbl">'+t('sdash.program')+'</div></div>'+
