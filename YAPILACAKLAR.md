@@ -1,7 +1,7 @@
 # İstanbul Keşif Okulu — Yapılacaklar Listesi
 
 Bu dosya, projenin canlı, kalıcı yapılacaklar listesidir. Her oturumda güncellenir.
-Son güncelleme: 2026-07-05
+Son güncelleme: 2026-07-05 (2. güncelleme)
 
 ---
 
@@ -28,9 +28,14 @@ Son güncelleme: 2026-07-05
 - [x] Canlı ders linki self-check-in
 
 ### Bildirimler ve Admin Yönetimi
-- [x] Site-içi bildirim sistemi (kayıt, mazeret gönderimi, mazeret onay/red)
+- [x] Site-içi bildirim sistemi (kayıt, mazeret gönderimi, mazeret onay/red, iletişim mesajı)
 - [x] Admin: öğrenci arama/filtreleme, dondurma, silme, CSV dışa aktarma
 - [x] Admin: yeni eğitmen/yönetici hesabı oluşturma ekranı
+- [x] Admin: eğitmen/yönetici şifresini sıfırlama
+- [x] İletişim formu (site → admin bildirimi, admin panelinden mesajları görüntüleme)
+- [x] Şifremi unuttum (öğrenci için, e-posta + doğum tarihi doğrulamasıyla)
+- [x] KVKK onay kutusu (kayıt formunda, zorunlu) + Gizlilik Metni (taslak, hukuki danışmanlık uyarılı)
+- [x] SSS (Sıkça Sorulan Sorular) bölümü
 
 ---
 
@@ -40,21 +45,18 @@ Bunlar bir kurum/hesap/sözleşme gerektirdiği için öncelik dışı bırakıl
 - [ ] KVKK VERBİS kaydı (resmi devlet kaydı — hukuki danışmanlık önerilir)
 - [ ] Şirket/vakıf resmi vergi & fatura entegrasyonu
 
-## 🟡 SIRADAKI ÖNCELİKLER (üzerinde çalışılıyor / önerilen sıra)
+## 🟡 SIRADAKI ÖNCELİKLER
 - [ ] **E-posta bildirimleri** — şu an sadece site-içi bildirim var, gerçek e-posta göndermek için
-      bir e-posta servisi (Resend/SendGrid) hesabı + API anahtarı gerekiyor (Supabase/Netlify/GitHub gibi ücretsiz kurulabilir)
-- [ ] KVKK aydınlatma metni + açık rıza onay kutusu (kayıt formunda — resmi kayıt değil, sadece metin/onay kutusu)
-- [ ] Kullanım Şartları / Gizlilik Politikası sayfası (metin olarak, hukuki danışmanlık olmadan taslak)
-- [ ] Şifremi unuttum / şifre sıfırlama akışı
-- [ ] İletişim formu / telefon / WhatsApp hattı (footer'a)
-- [ ] SSS (Sıkça Sorulan Sorular) bölümü
-- [ ] Eğitmen profil fotoğrafları + gerçek özgeçmişler
+      bir e-posta servisi (Resend/SendGrid) hesabı + API anahtarı gerekiyor (ücretsiz, resmi işlem değil)
+- [ ] Kullanım Şartları sayfası (Gizlilik Metni'ne ek olarak)
+- [ ] Eğitmen profil fotoğrafları + gerçek özgeçmişler (**kullanıcıdan gerçek bilgi/fotoğraf gerekiyor**, uydurulamaz)
+- [ ] Öğrenci şifresini kendi panelinden değiştirebilmesi (şu an sadece "unuttum" akışı var)
 
 ## 🟢 SONRAKİ AŞAMA (daha büyük işler)
 - [ ] Öğrenci kendi bilgilerini güncelleyebilme (profil düzenleme)
 - [ ] Veli onay mekanizması (18 yaş altı öğrenciler için)
 - [ ] Toplu öğrenci içe aktarma (Excel'den 1000 öğrenci)
-- [ ] Toplu e-posta / duyuru gönderme (admin panelinden)
+- [ ] Toplu e-posta / duyuru gönderme (admin panelinden — e-posta servisi kurulunca)
 - [ ] Fatura/makbuz otomatik oluşturma
 - [ ] Gelir/muhasebe raporu (admin dashboard'da grafik)
 - [ ] Aktivite/denetim kaydı (kim ne zaman değiştirdi)
@@ -62,7 +64,6 @@ Bunlar bir kurum/hesap/sözleşme gerektirdiği için öncelik dışı bırakıl
 - [ ] Google Analytics / ziyaretçi istatistiği
 - [ ] Oturum zaman aşımı, 2 adımlı doğrulama (admin için)
 - [ ] Site editörü şifresinin panelden değiştirilebilmesi (şu an sabit kodlanmış)
-- [ ] Eğitmenin kendi şifresini değiştirmesi
 
 ## 🐛 BİLİNEN HATALAR / KONTROL EDİLMESİ GEREKENLER
 - [ ] Bir öğrenci kaydında e-posta adresi bozuk görünüyor (`hrahmi@xn--gmailcom-w0a` gibi punycode'a
