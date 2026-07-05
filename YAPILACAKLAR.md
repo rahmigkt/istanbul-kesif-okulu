@@ -1,7 +1,7 @@
 # İstanbul Keşif Okulu — Yapılacaklar Listesi
 
 Bu dosya, projenin canlı, kalıcı yapılacaklar listesidir. Her oturumda güncellenir.
-Son güncelleme: 2026-07-05 (2. güncelleme)
+Son güncelleme: 2026-07-05 (3. güncelleme)
 
 ---
 
@@ -36,6 +36,16 @@ Son güncelleme: 2026-07-05 (2. güncelleme)
 - [x] Şifremi unuttum (öğrenci için, e-posta + doğum tarihi doğrulamasıyla)
 - [x] KVKK onay kutusu (kayıt formunda, zorunlu) + Gizlilik Metni (taslak, hukuki danışmanlık uyarılı)
 - [x] SSS (Sıkça Sorulan Sorular) bölümü
+- [x] Kullanım Şartları sayfası (taslak, hukuki danışmanlık uyarılı)
+- [x] Öğrenci kendi panelinden şifre değiştirebiliyor (mevcut şifre doğrulamalı)
+- [x] `info@schoolofistanbul.com` gerçek posta kutusu Natro'da oluşturuldu ve siteye (İletişim + footer) eklendi
+
+### 📧 E-posta durumu (kısmi)
+- Natro'da 1 kutu hakkı var, `info@schoolofistanbul.com` aktif ve doğrulandı (webmail: XMail Cloud üzerinden çalışıyor)
+- `bilgi@`, `kayit@`, `destek@`, `yonetim@` adresleri **oluşturulamadı** — paket sadece 1 hesap içeriyor. Ek hesap için paket yükseltmesi veya "yönlendirme (forwarder)" özelliği araştırılmalı.
+- info@ adresinin Gmail'den okunup yazılması (IMAP/SMTP kurulumu) **beklemede** — kullanıcı "başka zamana" bıraktı.
+- Otomatik sistem maili (kayıt onayı vb.) göndermek için henüz bir mekanizma kurulmadı — bu info@ kutusunun SMTP bilgileriyle ya da Resend gibi bir servisle yapılabilir, karar bekleniyor.
+
 
 ---
 
@@ -44,13 +54,12 @@ Bunlar bir kurum/hesap/sözleşme gerektirdiği için öncelik dışı bırakıl
 - [ ] Gerçek ödeme tahsilatı (iyzico / PayTR / Stripe sözleşmesi + entegrasyon)
 - [ ] KVKK VERBİS kaydı (resmi devlet kaydı — hukuki danışmanlık önerilir)
 - [ ] Şirket/vakıf resmi vergi & fatura entegrasyonu
+- [ ] **SMS bildirimleri** — bütçe kararı (SMS ücretli, ücretsiz kota yok) + İYS (İleti Yönetim Sistemi) kaydı gerektirir. Netgsm/İletiMerkezi önerilir. "Aklımızda olsun" notuyla bekletiliyor.
 
 ## 🟡 SIRADAKI ÖNCELİKLER
-- [ ] **E-posta bildirimleri** — şu an sadece site-içi bildirim var, gerçek e-posta göndermek için
-      bir e-posta servisi (Resend/SendGrid) hesabı + API anahtarı gerekiyor (ücretsiz, resmi işlem değil)
-- [ ] Kullanım Şartları sayfası (Gizlilik Metni'ne ek olarak)
+- [ ] **E-posta gönderim mekanizması** — info@ kutusunun SMTP bilgileri ile otomatik mail (kayıt onayı, mazeret sonucu vb.) gönderme kurulumu (kullanıcı ile bekliyor, "başka zamana" bırakıldı)
+- [ ] Ek e-posta hesapları veya yönlendirme (kayıt@, destek@ vb.) — Natro paket yükseltmesi ya da forwarder özelliği araştırılmalı
 - [ ] Eğitmen profil fotoğrafları + gerçek özgeçmişler (**kullanıcıdan gerçek bilgi/fotoğraf gerekiyor**, uydurulamaz)
-- [ ] Öğrenci şifresini kendi panelinden değiştirebilmesi (şu an sadece "unuttum" akışı var)
 
 ## 🟢 SONRAKİ AŞAMA (daha büyük işler)
 - [ ] Öğrenci kendi bilgilerini güncelleyebilme (profil düzenleme)
