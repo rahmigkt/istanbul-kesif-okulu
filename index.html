@@ -1063,7 +1063,73 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
       <div class="form-group"><label>Açıklama (Türkçe)</label><textarea id="editLessonDescTr" rows="4" class="lesson-edit-field"></textarea></div>
       <div class="form-group"><label>Açıklama (İngilizce)</label><textarea id="editLessonDescEn" rows="4" class="lesson-edit-field"></textarea></div>
       <div class="form-group"><label>Video URL (YouTube veya Vimeo linki, opsiyonel)</label><input type="text" id="editLessonVideoUrl" class="lesson-edit-field" placeholder="https://www.youtube.com/watch?v=..."></div>
+      <div class="form-group"><label>Canlı Ders Linki (Zoom/Meet, opsiyonel — teorik dersler için)</label><input type="text" id="editLessonLiveUrl" class="lesson-edit-field" placeholder="https://zoom.us/j/..."></div>
+      <div class="form-group"><label>Saha Konumu (Keşif turları için — GPS yoklama)</label>
+        <div class="form-row" style="grid-template-columns:1fr 1fr 1fr;">
+          <input type="text" id="editLessonLat" class="lesson-edit-field" placeholder="Enlem (lat) örn: 41.0086">
+          <input type="text" id="editLessonLng" class="lesson-edit-field" placeholder="Boylam (lng) örn: 28.9802">
+          <input type="text" id="editLessonRadius" class="lesson-edit-field" placeholder="Yarıçap (m) örn: 100">
+        </div>
+        <p class="small-note">Google Maps'te konuma sağ tıklayıp koordinatları kopyalayabilirsiniz.</p>
+      </div>
       <button class="btn-cta" style="width:100%;padding:12px;" onclick="saveLessonEdit()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXCUSE SUBMISSION MODAL -->
+<div id="excuseModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 id="excuseModalTitle" data-i18n="excuse.title">Mazeret Gönder</h3></div>
+      <button class="close" onclick="closeGenericModal('excuseModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="small-note" data-i18n="excuse.instr">Bu dersten muaf sayılmanız için (1) geçerli bir mazeret belgesi yönetim tarafından onaylanmalı VE (2) ders videosunu %100 izlemiş olmanız gerekir. İkisi tamamlanmadan katılım durumu güncellenmez.</p>
+      <div class="form-group">
+        <label data-i18n="excuse.fileUrl">Mazeret Belgesi Linki (rapor, resmi belge vb.)</label>
+        <input type="text" id="excuseFileUrl" placeholder="https://... (Google Drive, e-posta ekiniz vb. bir link)">
+      </div>
+      <input type="hidden" id="excuseLessonCode">
+      <button class="btn-cta" style="width:100%;padding:12px;" onclick="submitExcuse()" data-i18n="excuse.submit">Mazereti Gönder</button>
+    </div>
+  </div>
+</div>
+
+<!-- FIELD SLOT BOOKING MODAL -->
+<div id="fieldSlotModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 data-i18n="slot.title">Keşif Turu Randevusu</h3></div>
+      <button class="close" onclick="closeGenericModal('fieldSlotModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="fieldSlotList"><p class="small-note">Yükleniyor…</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE FIELD SLOT MODAL (staff/admin) -->
+<div id="createSlotModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 data-i18n="slot.create.title">Keşif Kontenjanı Oluştur</h3></div>
+      <button class="close" onclick="closeGenericModal('createSlotModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label data-i18n="slot.create.lesson">Keşif Turu</label>
+        <select id="createSlotLessonCode"></select>
+      </div>
+      <div class="form-group">
+        <label data-i18n="slot.create.datetime">Tarih ve Saat</label>
+        <input type="datetime-local" id="createSlotDateTime">
+      </div>
+      <div class="form-group">
+        <label data-i18n="slot.create.quota">Kontenjan (kişi)</label>
+        <input type="number" id="createSlotQuota" value="30" min="1" max="200">
+      </div>
+      <button class="btn-cta" style="width:100%;padding:12px;" onclick="createFieldSlot()" data-i18n="slot.create.submit">Kontenjanı Oluştur</button>
     </div>
   </div>
 </div>
@@ -1092,7 +1158,8 @@ async function loadLessons(){
     grouped[row.day].lessons.push({
       code: row.code, title_tr: row.title_tr, title_en: row.title_en,
       desc_tr: row.desc_tr, desc_en: row.desc_en, category: row.category,
-      type: row.type, time: row.time_label, video_url: row.video_url
+      type: row.type, time: row.time_label, video_url: row.video_url,
+      lat: row.lat, lng: row.lng, geofence_radius_m: row.geofence_radius_m, live_url: row.live_url
     });
   });
   LESSONS = Object.keys(grouped).map(k=>grouped[k]).sort((a,b)=>a.day-b.day);
@@ -1113,6 +1180,67 @@ function youtubeEmbedUrl(url){
   m = url.match(/vimeo\.com\/(\d+)/);
   if(m) return 'https://player.vimeo.com/video/' + m[1];
   return url; // fall back to raw URL (e.g. direct mp4 or unrecognized host)
+}
+function extractYouTubeId(url){
+  if(!url) return null;
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{6,})/);
+  return m ? m[1] : null;
+}
+
+/* ---------- YouTube watch-percentage tracking ---------- */
+let ytApiReady = false;
+let currentYtPlayer = null;
+let videoTrackingInterval = null;
+let currentTrackingLessonCode = null;
+(function loadYouTubeAPI(){
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+})();
+window.onYouTubeIframeAPIReady = function(){ ytApiReady = true; };
+
+function startVideoTracking(lessonCode, youtubeId, attempt){
+  attempt = attempt || 0;
+  stopVideoTracking();
+  currentTrackingLessonCode = lessonCode;
+  if(!ytApiReady || !window.YT || !window.YT.Player){
+    if(attempt < 20) setTimeout(()=>startVideoTracking(lessonCode, youtubeId, attempt+1), 300);
+    return;
+  }
+  const target = document.getElementById('modalVideoFrame');
+  if(!target) return;
+  currentYtPlayer = new YT.Player('modalVideoFrame', {
+    videoId: youtubeId,
+    events: {
+      'onReady': function(){
+        videoTrackingInterval = setInterval(reportVideoProgress, 5000);
+      }
+    }
+  });
+}
+function reportVideoProgress(){
+  const session = getSession();
+  if(!session || session.role !== 'student' || !currentYtPlayer || !currentTrackingLessonCode) return;
+  try{
+    const dur = currentYtPlayer.getDuration();
+    const cur = currentYtPlayer.getCurrentTime();
+    if(dur > 0){
+      const pct = Math.min(100, Math.round((cur/dur)*100));
+      db.rpc('rpc_update_video_progress', { p_student_id: session.id, p_lesson_code: currentTrackingLessonCode, p_watch_percentage: pct });
+    }
+  }catch(e){ /* player not ready yet */ }
+}
+function stopVideoTracking(){
+  if(videoTrackingInterval){ clearInterval(videoTrackingInterval); videoTrackingInterval = null; }
+  if(currentYtPlayer && currentYtPlayer.destroy){ try{ currentYtPlayer.destroy(); }catch(e){} }
+  currentYtPlayer = null;
+  currentTrackingLessonCode = null;
+}
+async function markVideoWatchedManually(code){
+  const session = getSession();
+  if(!session || session.role !== 'student'){ alert('Bu işlem için öğrenci girişi yapmalısınız.'); return; }
+  await db.rpc('rpc_update_video_progress', { p_student_id: session.id, p_lesson_code: code, p_watch_percentage: 100 });
+  alert(currentLang==='tr' ? 'Video tamamlandı olarak işaretlendi.' : 'Video marked as completed.');
 }
 
 const WEEKDAY_FULL_EN = { 'Salı':'Tuesday', 'Çarşamba':'Wednesday', 'Perşembe':'Thursday', 'Cuma':'Friday', 'Cumartesi':'Saturday' };
@@ -1335,7 +1463,43 @@ const MODULE_PHILOSOPHY = {
     "rate.comment": "Yorumunuz (opsiyonel)",
     "rate.submit": "Değerlendirmeyi Gönder",
     "rate.needScore": "Lütfen bir yıldız puanı seçin.",
-    "rate.thanks": "Değerlendirmeniz için teşekkürler!"
+    "rate.thanks": "Değerlendirmeniz için teşekkürler!",
+    "excuse.title": "Mazeret Gönder",
+    "excuse.instr": "Bu dersten muaf sayılmanız için (1) geçerli bir mazeret belgesi yönetim tarafından onaylanmalı VE (2) ders videosunu %100 izlemiş olmanız gerekir. İkisi tamamlanmadan katılım durumu güncellenmez.",
+    "excuse.fileUrl": "Mazeret Belgesi Linki (rapor, resmi belge vb.)",
+    "excuse.submit": "Mazereti Gönder",
+    "excuse.success": "Mazeretiniz gönderildi, yönetim onayı bekleniyor.",
+    "slot.title": "Keşif Turu Randevusu",
+    "slot.create.title": "Keşif Kontenjanı Oluştur",
+    "slot.create.lesson": "Keşif Turu",
+    "slot.create.datetime": "Tarih ve Saat",
+    "slot.create.quota": "Kontenjan (kişi)",
+    "slot.create.submit": "Kontenjanı Oluştur",
+    "slot.book": "Randevu Al",
+    "slot.full": "Kontenjan Doldu",
+    "slot.booked": "Randevunuz Alındı",
+    "slot.noSlots": "Bu tur için henüz kontenjan açılmamış.",
+    "slot.remaining": "kişilik yer kaldı",
+    "gps.button": "📍 GPS ile Yoklama Ver",
+    "gps.checking": "Konumunuz kontrol ediliyor…",
+    "gps.success": "Konum doğrulandı, yoklamanız işlendi!",
+    "gps.outOfRange": "Bu dersin sahasında değilsiniz (mesafe: {d} m). Yoklama veremezsiniz.",
+    "gps.denied": "Konum izni verilmedi. Yoklama vermek için tarayıcınızdan konum iznine izin vermeniz gerekir.",
+    "gps.noLocation": "Bu ders için henüz bir saha konumu tanımlanmamış.",
+    "live.join": "🔴 Canlı Derse Katıl",
+    "excuse.button": "Mazeret Gönder",
+    "excuse.pending": "Mazeret İnceleniyor",
+    "cert.status.title": "Sertifika Durumu",
+    "cert.status.theoretical": "Teorik Ders Katılımı",
+    "cert.status.field": "Keşif Turu Katılımı",
+    "cert.status.eligible": "🎓 Sertifika için tüm şartlar tamamlandı!",
+    "cert.status.notEligible": "Sertifika için tüm derslere %100 katılım gereklidir.",
+    "staff.excuses.title": "Bekleyen Mazeretler",
+    "staff.excuses.none": "Bekleyen mazeret bulunmuyor.",
+    "staff.excuses.approve": "Onayla",
+    "staff.excuses.reject": "Reddet",
+    "staff.excuses.watched": "Video İzleme",
+    "staff.createSlot": "+ Kontenjan Oluştur"
   },
   "en": {
     "brand.sub": "School of Istanbul",
@@ -1536,7 +1700,43 @@ const MODULE_PHILOSOPHY = {
     "rate.comment": "Your comment (optional)",
     "rate.submit": "Submit Evaluation",
     "rate.needScore": "Please select a star rating.",
-    "rate.thanks": "Thank you for your evaluation!"
+    "rate.thanks": "Thank you for your evaluation!",
+    "excuse.title": "Submit an Excuse",
+    "excuse.instr": "To be excused from this lesson, (1) a valid excuse document must be approved by staff AND (2) you must have watched 100% of the lesson video. Attendance status will not update until both are complete.",
+    "excuse.fileUrl": "Excuse Document Link (report, official document, etc.)",
+    "excuse.submit": "Submit Excuse",
+    "excuse.success": "Your excuse has been submitted and is awaiting staff review.",
+    "slot.title": "Exploration Tour Booking",
+    "slot.create.title": "Create Field Slot",
+    "slot.create.lesson": "Exploration Tour",
+    "slot.create.datetime": "Date and Time",
+    "slot.create.quota": "Quota (people)",
+    "slot.create.submit": "Create Slot",
+    "slot.book": "Book This Slot",
+    "slot.full": "Slot Full",
+    "slot.booked": "Booked",
+    "slot.noSlots": "No slots have been opened for this tour yet.",
+    "slot.remaining": "spots remaining",
+    "gps.button": "📍 Check In via GPS",
+    "gps.checking": "Checking your location…",
+    "gps.success": "Location verified, your attendance has been recorded!",
+    "gps.outOfRange": "You are not at this lesson's site (distance: {d} m). Cannot check in.",
+    "gps.denied": "Location permission denied. You must allow location access in your browser to check in.",
+    "gps.noLocation": "No field location has been set for this lesson yet.",
+    "live.join": "🔴 Join Live Session",
+    "excuse.button": "Submit Excuse",
+    "excuse.pending": "Excuse Under Review",
+    "cert.status.title": "Certificate Status",
+    "cert.status.theoretical": "Theoretical Lesson Attendance",
+    "cert.status.field": "Exploration Tour Attendance",
+    "cert.status.eligible": "🎓 All requirements for certification are complete!",
+    "cert.status.notEligible": "100% attendance in all lessons is required for certification.",
+    "staff.excuses.title": "Pending Excuses",
+    "staff.excuses.none": "No pending excuses.",
+    "staff.excuses.approve": "Approve",
+    "staff.excuses.reject": "Reject",
+    "staff.excuses.watched": "Video Watched",
+    "staff.createSlot": "+ Create Slot"
   }
 }
 </script>
@@ -1693,13 +1893,27 @@ function openLessonModal(code){
     '<span class="meta-tag">'+(isExploration?'🧭':'📚')+' '+typeLabel+'</span>';
   document.getElementById('modalDesc').textContent = desc;
   const videoWrap = document.getElementById('modalVideoWrap');
-  const videoFrame = document.getElementById('modalVideoFrame');
   if(l.video_url){
-    videoFrame.src = youtubeEmbedUrl(l.video_url);
+    const ytId = extractYouTubeId(l.video_url);
+    videoWrap.innerHTML = '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000;"><iframe id="modalVideoFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe></div>';
     videoWrap.style.display = '';
+    const session = getSession();
+    if(ytId){
+      if(session && session.role === 'student'){
+        startVideoTracking(code, ytId);
+      } else {
+        document.getElementById('modalVideoFrame').src = youtubeEmbedUrl(l.video_url);
+      }
+    } else {
+      document.getElementById('modalVideoFrame').src = youtubeEmbedUrl(l.video_url);
+    }
+    if(session && session.role === 'student'){
+      videoWrap.innerHTML += '<button class="btn-ghost" style="margin-top:10px;color:var(--ink);border-color:var(--border-color);" onclick="markVideoWatchedManually(\''+code+'\')">✓ '+(currentLang==='tr'?'Videoyu tamamen izledim olarak işaretle':'Mark video as fully watched')+'</button>';
+    }
   } else {
-    videoFrame.src = '';
+    videoWrap.innerHTML = '<iframe id="modalVideoFrame" style="display:none;" allowfullscreen></iframe>';
     videoWrap.style.display = 'none';
+    stopVideoTracking();
   }
   document.getElementById('lessonModal').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -1707,7 +1921,8 @@ function openLessonModal(code){
 
 function closeModal(){
   document.getElementById('lessonModal').classList.remove('active');
-  document.getElementById('modalVideoFrame').src = '';
+  stopVideoTracking();
+  document.getElementById('modalVideoWrap').innerHTML = '<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;background:#000;"><iframe id="modalVideoFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe></div>';
   document.body.style.overflow = '';
 }
 document.getElementById('lessonModal').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
@@ -2045,17 +2260,20 @@ async function renderStudentDashboard(){
   document.getElementById('studentDashBody').innerHTML = '<p class="small-note">Yükleniyor…</p>';
 
   const { data: state } = await db.rpc('rpc_get_student_state', { p_student_id: session.id });
-  const attendedCodes = (state && state.attendance) || [];
+  const attendanceArr = (state && state.attendance) || [];
+  const attendanceMap = {};
+  attendanceArr.forEach(a=> attendanceMap[a.lesson_code] = a);
   const ratingsArr = (state && state.ratings) || [];
   const ratingsMap = {};
   ratingsArr.forEach(r=> ratingsMap[r.lesson_code] = r);
+  const videoArr = (state && state.video_progress) || [];
+  const videoMap = {};
+  videoArr.forEach(v=> videoMap[v.lesson_code] = v.watch_percentage);
+  const cert = (state && state.certificate) || { theoretical_pct:0, field_pct:0, eligible:false };
 
+  const ATTENDED_STATUSES = ['attended_physical','attended_live','watched_video'];
   const lessons = getProgramLessons(student.program);
-  const totalCount = lessons.length || 1;
-  const pct = Math.round((attendedCodes.length / totalCount) * 100);
-  const explorationLessons = lessons.filter(l=>l.type==='exploration');
-  const attendedExploration = explorationLessons.filter(l=>attendedCodes.includes(l.code)).length;
-  const explorationPct = explorationLessons.length ? Math.round((attendedExploration/explorationLessons.length)*100) : 0;
+  const attendedCount = lessons.filter(l => attendanceMap[l.code] && ATTENDED_STATUSES.includes(attendanceMap[l.code].status)).length;
 
   const initials = student.ad_soyad.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
   const regDate = new Date(student.kayit_tarihi).toLocaleDateString(currentLang==='tr'?'tr-TR':'en-US');
@@ -2072,19 +2290,25 @@ async function renderStudentDashboard(){
   html += '<div class="dash-stats">'+
     '<div class="dash-stat-card"><div class="num">'+programLabel(student.program, currentLang)+'</div><div class="lbl">'+t('sdash.program')+'</div></div>'+
     '<div class="dash-stat-card"><div class="num">'+regDate+'</div><div class="lbl">'+t('sdash.since')+'</div></div>'+
-    '<div class="dash-stat-card"><div class="num">'+attendedCodes.length+' / '+lessons.length+'</div><div class="lbl">'+t('sdash.mylessons')+'</div></div>'+
+    '<div class="dash-stat-card"><div class="num">'+attendedCount+' / '+lessons.length+'</div><div class="lbl">'+t('sdash.mylessons')+'</div></div>'+
   '</div>';
   html += '<div class="dash-list-item" style="margin-bottom:24px;"><div class="info"><div class="title">'+t('sdash.fee')+': '+feeAmount+'</div><div class="sub">'+(student.kart_son_dort ? t('sdash.cardEnding')+' •••• '+student.kart_son_dort : '')+'</div></div><span class="chk-badge '+paidBadgeClass+'">'+paidLabel+'</span></div>';
 
-  html += '<div class="dash-section"><h4>'+t('sdash.progress')+'</h4>'+
-    '<div class="progress-bar"><div class="progress-bar-fill" style="width:'+pct+'%;"></div></div>'+
-    '<div class="small-note">'+pct+'%</div></div>';
+  html += '<div class="dash-section"><h4>'+t('cert.status.title')+'</h4>'+
+    '<div class="small-note">'+t('cert.status.theoretical')+'</div>'+
+    '<div class="progress-bar"><div class="progress-bar-fill" style="width:'+cert.theoretical_pct+'%;"></div></div>'+
+    '<div class="small-note" style="margin-bottom:14px;">'+cert.theoretical_ok+' / '+cert.theoretical_total+' ('+cert.theoretical_pct+'%)</div>'+
+    '<div class="small-note">'+t('cert.status.field')+'</div>'+
+    '<div class="progress-bar"><div class="progress-bar-fill" style="width:'+cert.field_pct+'%;"></div></div>'+
+    '<div class="small-note">'+cert.field_ok+' / '+cert.field_total+' ('+cert.field_pct+'%)</div>'+
+    '<div class="small-note" style="margin-top:12px;font-weight:700;color:'+(cert.eligible?'#1f5c33':'var(--gold-deep)')+';">'+(cert.eligible?t('cert.status.eligible'):t('cert.status.notEligible'))+'</div>'+
+  '</div>';
 
   html += '<div class="dash-section"><h4>'+t('sdash.requirements')+'</h4>';
   const reqs = [
     { done: true, tr:'Eğitim ücreti ve hayat sigortası kaydı tamamlandı.', en:'Tuition and life-insurance registration completed.' },
-    { done: pct >= 70, tr:'Ders devam zorunluluğu (% 70): şu an %'+pct+'.', en:'Attendance requirement (70%): currently '+pct+'%.' },
-    { done: explorationPct >= 70, tr:'Keşif turlarına % 70 katılım: şu an %'+explorationPct+'.', en:'70% exploration-tour participation: currently '+explorationPct+'%.' },
+    { done: cert.theoretical_pct >= 100, tr:'Teorik derslere %100 katılım: şu an %'+cert.theoretical_pct+'.', en:'100% theoretical attendance: currently '+cert.theoretical_pct+'%.' },
+    { done: cert.field_pct >= 100, tr:'Keşif turlarına %100 katılım: şu an %'+cert.field_pct+'.', en:'100% exploration-tour attendance: currently '+cert.field_pct+'%.' },
     { done: false, tr:'Dönem sonu proje teslimi ve başarı şartı.', en:'End-of-term project submission and passing grade.' }
   ];
   reqs.forEach(r=>{
@@ -2099,17 +2323,44 @@ async function renderStudentDashboard(){
     lessons.forEach(l=>{
       const title = currentLang==='tr' ? l.title_tr : l.title_en;
       const weekday = currentLang==='tr' ? l.weekday_tr : (WEEKDAY_FULL_EN[l.weekday_tr]||l.weekday_en);
-      const isAttended = attendedCodes.includes(l.code);
+      const att = attendanceMap[l.code];
+      const status = att ? att.status : 'absent';
+      const isAttended = ATTENDED_STATUSES.includes(status);
       const hasRated = !!ratingsMap[l.code];
+      const watchPct = videoMap[l.code] || 0;
       const dayLbl = currentLang==='tr' ? (l.day+'. Gün') : ('Day '+l.day);
-      const videoTag = l.video_url ? ' <button class="chk-badge pending" style="cursor:pointer;border:none;" onclick="openLessonModal(\''+l.code+'\')">▶ '+(currentLang==='tr'?'Video':'Video')+'</button>' : '';
+      const videoTag = l.video_url ? ' <button class="chk-badge pending" style="cursor:pointer;border:none;" onclick="openLessonModal(\''+l.code+'\')">▶ Video'+(watchPct>0?' ('+watchPct+'%)':'')+'</button>' : '';
+
+      let actionsHtml = '';
+      if(isAttended){
+        const statusLabel = status==='attended_physical' ? '✓ Fiziksel' : status==='attended_live' ? '✓ Canlı' : '✓ Video';
+        actionsHtml += '<span class="chk-badge done">'+statusLabel+'</span>';
+      } else if(status === 'excused_pending'){
+        actionsHtml += '<span class="chk-badge pending">⏳ '+t('excuse.pending')+'</span>';
+      } else {
+        // absent — offer the right check-in method for this lesson
+        if(l.type === 'exploration'){
+          if(l.lat != null && l.lng != null){
+            actionsHtml += '<button class="btn-ghost" style="color:var(--field-green-deep);border-color:var(--field-green);" onclick="doGeofenceCheckin(\''+l.code+'\')">'+t('gps.button')+'</button>';
+          }
+          actionsHtml += '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openFieldSlotModal(\''+l.code+'\')">'+t('slot.title')+'</button>';
+        } else {
+          if(l.live_url){
+            actionsHtml += '<button class="btn-ghost" style="color:var(--tile-coral);border-color:var(--tile-coral);" onclick="joinLiveSession(\''+l.code+'\',\''+l.live_url+'\')">'+t('live.join')+'</button>';
+          }
+          actionsHtml += '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="toggleAttendance(\''+l.code+'\')">'+t('sdash.attend')+'</button>';
+        }
+        actionsHtml += '<button class="btn-ghost" style="color:var(--tile-coral);border-color:var(--border-color);font-size:0.7rem;" onclick="openExcuseModal(\''+l.code+'\')">'+t('excuse.button')+'</button>';
+      }
+      if(isAttended){
+        actionsHtml += hasRated ? '<span class="chk-badge done">★ '+t('sdash.rated')+'</span>' : '<button class="btn-cta" style="padding:6px 12px;font-size:0.72rem;" onclick="openRateModal(\''+l.code+'\')">'+t('sdash.rate')+'</button>';
+      }
+
       html += '<div class="dash-list-item">'+
         '<div class="info"><div class="title">'+(l.type==='exploration'?'⛰ ':'')+title+' <span class="lesson-code">'+l.code+'</span>'+videoTag+'</div>'+
-        '<div class="sub">'+dayLbl+' · '+weekday+'</div></div>'+
-        '<div class="dash-actions">'+
-          (isAttended ? '<span class="chk-badge done">✓ '+t('sdash.attended')+'</span>' : '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="toggleAttendance(\''+l.code+'\')">'+t('sdash.attend')+'</button>') +
-          (isAttended ? (hasRated ? '<span class="chk-badge done">★ '+t('sdash.rated')+'</span>' : '<button class="btn-cta" style="padding:6px 12px;font-size:0.72rem;" onclick="openRateModal(\''+l.code+'\')">'+t('sdash.rate')+'</button>') : '') +
-        '</div>'+
+        '<div class="sub">'+dayLbl+' · '+weekday+'</div>'+
+        '<div class="small-note" id="gpsStatus_'+l.code.replace(/\./g,'_')+'"></div></div>'+
+        '<div class="dash-actions">'+actionsHtml+'</div>'+
       '</div>';
     });
   }
@@ -2122,6 +2373,123 @@ async function toggleAttendance(code){
   const session = getSession();
   await db.rpc('rpc_mark_attendance', { p_student_id: session.id, p_lesson_code: code });
   await renderStudentDashboard();
+}
+
+/* ---------- GPS geofenced check-in ---------- */
+function doGeofenceCheckin(code){
+  const lesson = LESSON_BY_CODE[code];
+  if(!lesson || lesson.lat == null || lesson.lng == null){
+    alert(t('gps.noLocation'));
+    return;
+  }
+  if(!navigator.geolocation){
+    alert(t('gps.denied'));
+    return;
+  }
+  const statusEl = document.getElementById('gpsStatus_'+code.replace(/\./g,'_'));
+  if(statusEl) statusEl.textContent = t('gps.checking');
+  navigator.geolocation.getCurrentPosition(async function(pos){
+    const session = getSession();
+    const { data, error } = await db.rpc('rpc_verify_geofence_attendance', {
+      p_student_id: session.id, p_lesson_code: code,
+      p_lat: pos.coords.latitude, p_lng: pos.coords.longitude
+    });
+    if(error){
+      const m = (error.message||'').match(/OUT_OF_RANGE:(\d+)/);
+      if(m) alert(t('gps.outOfRange').replace('{d}', m[1]));
+      else alert('Hata: ' + error.message);
+      if(statusEl) statusEl.textContent = '';
+      return;
+    }
+    alert(t('gps.success'));
+    await renderStudentDashboard();
+  }, function(err){
+    alert(t('gps.denied'));
+    if(statusEl) statusEl.textContent = '';
+  }, { enableHighAccuracy: true, timeout: 15000 });
+}
+
+/* ---------- live session join ---------- */
+async function joinLiveSession(code, url){
+  const session = getSession();
+  if(session && session.role === 'student'){
+    await db.rpc('rpc_mark_live_attendance', { p_student_id: session.id, p_lesson_code: code });
+    await renderStudentDashboard();
+  }
+  window.open(url, '_blank');
+}
+
+/* ---------- excuse submission ---------- */
+function openExcuseModal(code){
+  document.getElementById('excuseLessonCode').value = code;
+  document.getElementById('excuseFileUrl').value = '';
+  const lesson = LESSON_BY_CODE[code];
+  document.getElementById('excuseModalTitle').textContent = t('excuse.title') + ' — ' + (lesson ? (currentLang==='tr'?lesson.title_tr:lesson.title_en) : code);
+  openGenericModal('excuseModal');
+}
+async function submitExcuse(){
+  const code = document.getElementById('excuseLessonCode').value;
+  const fileUrl = document.getElementById('excuseFileUrl').value.trim();
+  if(!fileUrl){ alert(currentLang==='tr'?'Lütfen bir belge linki girin.':'Please enter a document link.'); return; }
+  const session = getSession();
+  await db.rpc('rpc_submit_excuse', { p_student_id: session.id, p_lesson_code: code, p_file_url: fileUrl });
+  closeGenericModal('excuseModal');
+  alert(t('excuse.success'));
+  await renderStudentDashboard();
+}
+
+/* ---------- field slot booking (student) ---------- */
+async function openFieldSlotModal(code){
+  openGenericModal('fieldSlotModal');
+  const listEl = document.getElementById('fieldSlotList');
+  listEl.innerHTML = '<p class="small-note">Yükleniyor…</p>';
+  const { data, error } = await db.from('field_slots_public').select('*').eq('lesson_code', code);
+  if(error || !data || !data.length){
+    listEl.innerHTML = '<p class="small-note">'+t('slot.noSlots')+'</p>';
+    return;
+  }
+  const session = getSession();
+  const { data: mySlots } = await db.rpc('rpc_get_my_field_slots', { p_student_id: session.id });
+  const myBooked = (mySlots||[]).map(s=>s.slot_id);
+  listEl.innerHTML = data.map(slot=>{
+    const remaining = slot.quota - slot.current_registered;
+    const isBooked = myBooked.includes(slot.id);
+    const dt = new Date(slot.slot_time).toLocaleString(currentLang==='tr'?'tr-TR':'en-US');
+    let actionHtml;
+    if(isBooked) actionHtml = '<span class="chk-badge done">✓ '+t('slot.booked')+'</span>';
+    else if(remaining <= 0) actionHtml = '<span class="chk-badge pending">'+t('slot.full')+'</span>';
+    else actionHtml = '<button class="btn-cta" style="padding:8px 14px;font-size:0.78rem;" onclick="bookFieldSlot('+slot.id+',\''+code+'\')">'+t('slot.book')+'</button>';
+    return '<div class="dash-list-item"><div class="info"><div class="title">'+dt+'</div><div class="sub">'+remaining+' '+t('slot.remaining')+'</div></div>'+actionHtml+'</div>';
+  }).join('');
+}
+async function bookFieldSlot(slotId, lessonCode){
+  const session = getSession();
+  const { error } = await db.rpc('rpc_book_field_slot', { p_student_id: session.id, p_slot_id: slotId });
+  if(error){
+    alert(error.message.includes('SLOT_FULL') ? t('slot.full') : ('Hata: '+error.message));
+  }
+  await openFieldSlotModal(lessonCode);
+}
+
+/* ---------- field slot creation (staff/admin) ---------- */
+function openCreateSlotModal(){
+  const select = document.getElementById('createSlotLessonCode');
+  const explorationLessons = getAllLessonsFlat().filter(l=>l.type==='exploration');
+  select.innerHTML = explorationLessons.map(l=>'<option value="'+l.code+'">'+l.code+' — '+(currentLang==='tr'?l.title_tr:l.title_en)+'</option>').join('');
+  openGenericModal('createSlotModal');
+}
+async function createFieldSlot(){
+  const session = getSession();
+  const code = document.getElementById('createSlotLessonCode').value;
+  const dt = document.getElementById('createSlotDateTime').value;
+  const quota = parseInt(document.getElementById('createSlotQuota').value, 10) || 30;
+  if(!dt){ alert(currentLang==='tr'?'Lütfen bir tarih/saat seçin.':'Please choose a date/time.'); return; }
+  const { error } = await db.rpc('rpc_create_field_slot', {
+    p_staff_id: session.id, p_lesson_code: code, p_slot_time: new Date(dt).toISOString(), p_quota: quota
+  });
+  if(error){ alert('Hata: '+error.message); return; }
+  closeGenericModal('createSlotModal');
+  alert(currentLang==='tr'?'Kontenjan oluşturuldu.':'Slot created.');
 }
 
 /* ---------- rating ---------- */
@@ -2206,7 +2574,13 @@ async function renderStaffDashboard(){
     const dayLbl = currentLang==='tr' ? (l.day+'. Gün') : ('Day '+l.day);
     html += '<div class="dash-list-item"><div class="info"><div class="title">'+(l.type==='exploration'?'⛰ ':'')+title+' <span class="lesson-code">'+l.code+'</span></div><div class="sub">'+dayLbl+'</div></div></div>';
   });
-  html += '</div></div>';
+  html += '</div>';
+  if(staffMember.only_exploration || staffMember.role === 'admin'){
+    html += '<button class="btn-ghost" style="margin-top:10px;color:var(--ink);border-color:var(--border-color);" onclick="openCreateSlotModal()">'+t('staff.createSlot')+'</button>';
+  }
+  html += '</div>';
+
+  html += '<div class="dash-section"><h4>'+t('staff.excuses.title')+'</h4><div id="pendingExcusesBox"><p class="small-note">Yükleniyor…</p></div></div>';
 
   html += '<div class="dash-section"><h4>'+t('tdash.students')+'</h4>';
   if(!myStudents.length){
@@ -2247,6 +2621,33 @@ async function renderStaffDashboard(){
 
   document.getElementById('staffDashTitle').textContent = name;
   document.getElementById('staffDashBody').innerHTML = html;
+  loadPendingExcuses(session.id);
+}
+
+async function loadPendingExcuses(staffId){
+  const box = document.getElementById('pendingExcusesBox');
+  if(!box) return;
+  const { data, error } = await db.rpc('rpc_get_pending_excuses', { p_staff_id: staffId });
+  if(error || !data || !data.length){
+    box.innerHTML = '<p class="small-note">'+t('staff.excuses.none')+'</p>';
+    return;
+  }
+  box.innerHTML = data.map(e=>
+    '<div class="dash-list-item">'+
+      '<div class="info"><div class="title">'+e.student_name+' — '+e.lesson_title+' <span class="lesson-code">'+e.lesson_code+'</span></div>'+
+      '<div class="sub">'+t('staff.excuses.watched')+': '+e.watch_percentage+'% · <a href="'+e.excuse_file_url+'" target="_blank" rel="noopener">'+ (currentLang==='tr'?'Belgeyi Gör':'View Document') +'</a></div></div>'+
+      '<div class="dash-actions">'+
+        '<button class="btn-cta" style="padding:6px 12px;font-size:0.72rem;background:#4ade80;border-color:#4ade80;" onclick="reviewExcuse('+e.attendance_id+',\'approved\')">'+t('staff.excuses.approve')+'</button>'+
+        '<button class="btn-ghost" style="padding:6px 12px;font-size:0.72rem;color:var(--tile-coral);border-color:var(--tile-coral);" onclick="reviewExcuse('+e.attendance_id+',\'rejected\')">'+t('staff.excuses.reject')+'</button>'+
+      '</div>'+
+    '</div>'
+  ).join('');
+}
+async function reviewExcuse(attendanceId, decision){
+  const session = getSession();
+  const { error } = await db.rpc('rpc_review_excuse', { p_staff_id: session.id, p_attendance_id: attendanceId, p_decision: decision });
+  if(error){ alert('Hata: '+error.message); return; }
+  await loadPendingExcuses(session.id);
 }
 
 /* ================================================================
@@ -2377,6 +2778,10 @@ function openLessonEditModal(code){
   document.getElementById('editLessonDescTr').value = l.desc_tr;
   document.getElementById('editLessonDescEn').value = l.desc_en;
   document.getElementById('editLessonVideoUrl').value = l.video_url || '';
+  document.getElementById('editLessonLiveUrl').value = l.live_url || '';
+  document.getElementById('editLessonLat').value = l.lat != null ? l.lat : '';
+  document.getElementById('editLessonLng').value = l.lng != null ? l.lng : '';
+  document.getElementById('editLessonRadius').value = l.geofence_radius_m != null ? l.geofence_radius_m : 100;
   openGenericModal('lessonEditModal');
 }
 async function saveLessonEdit(){
@@ -2388,14 +2793,26 @@ async function saveLessonEdit(){
     desc_en: document.getElementById('editLessonDescEn').value
   };
   const videoUrl = document.getElementById('editLessonVideoUrl').value.trim();
+  const liveUrl = document.getElementById('editLessonLiveUrl').value.trim();
+  const latVal = document.getElementById('editLessonLat').value.trim();
+  const lngVal = document.getElementById('editLessonLng').value.trim();
+  const radiusVal = document.getElementById('editLessonRadius').value.trim();
+  const extra = {
+    video_url: videoUrl || null,
+    live_url: liveUrl || null,
+    lat: latVal ? parseFloat(latVal) : null,
+    lng: lngVal ? parseFloat(lngVal) : null,
+    geofence_radius_m: radiusVal ? parseInt(radiusVal,10) : 100
+  };
   const l = LESSON_BY_CODE[code];
-  if(l) Object.assign(l, updates, { video_url: videoUrl || null });
-  LESSONS.forEach(day=> day.lessons.forEach(les=>{ if(les.code===code) Object.assign(les, updates, { video_url: videoUrl || null }); }));
+  if(l) Object.assign(l, updates, extra);
+  LESSONS.forEach(day=> day.lessons.forEach(les=>{ if(les.code===code) Object.assign(les, updates, extra); }));
   const { error } = await db.rpc('rpc_editor_save_lesson', {
     p_password: currentEditorPassword, p_code: code,
     p_title_tr: updates.title_tr, p_title_en: updates.title_en,
     p_desc_tr: updates.desc_tr, p_desc_en: updates.desc_en,
-    p_video_url: videoUrl || null
+    p_video_url: extra.video_url, p_lat: extra.lat, p_lng: extra.lng,
+    p_geofence_radius_m: extra.geofence_radius_m, p_live_url: extra.live_url
   });
   closeGenericModal('lessonEditModal');
   renderDayGrid();
