@@ -1,7 +1,19 @@
 # İstanbul Keşif Okulu — Yapılacaklar Listesi
 
 Bu dosya, projenin canlı, kalıcı yapılacaklar listesidir. Her oturumda güncellenir.
-Son güncelleme: 2026-07-05 (4. güncelleme — gerçek kurumsal içerik entegrasyonu)
+Son güncelleme: 2026-07-05 (5. güncelleme — gerçek kişi isimleri geri alındı)
+
+## ✅ Bu turda tamamlananlar
+- [x] **Paydaşlar bölümü tamamen kaldırıldı** (FSMVÜ, Valilik, Kültür Müdürlüğü, Vakıflar dahil — onaylanmamış kurumsal iş birliği iddiaları)
+- [x] **Bilim Kurulu ve Eğitim Kadrosu listesi kaldırıldı** (İlber Ortaylı, Ümit Meriç, Amir Pasiç, Levent Erden ve 28 kişilik eğitim kadrosu) — kullanıcı onayı olmadan gerçek kişi isimleri kullanılmasın diye
+- [x] **Sadece Prof. Dr. Mustafa Kaçar** "Akademik Danışman" olarak kaldı (kullanıcı özel olarak istedi)
+- [x] **4 eğitmen giriş hesabı** gerçek isimlerden (Özsait, Kal'a, Ortaylı, Akyürek) jenerik isimlere çevrildi (modul1@ike.demo, modul2@ike.demo, modul3@ike.demo, kesif@ike.demo — şifre: 1234)
+- [x] Danışma Kurulu (sadece makam/unvan, isim yok — Vali, İBB Başkanı vb.) güvenli kategori olduğu için kaldı
+
+## 📌 Not
+- Bizans→Doğu Roma terminoloji değişikliği hâlâ geçerli (o kalıcı, kişi/kurum ismi içermiyor).
+- "Diğer Paydaşlar" listesi (İl Milli Eğitim Müdürlüğü, TÜRSAB, THY, İTO, İRO) de **Paydaşlar bölümüyle birlikte kaldırıldı** — bu kurumsal iş birliklerinin de gerçekten teyit edilmiş olup olmadığını kullanıcı isterse tekrar ekleyebiliriz.
+
 
 ## ✅ Bu turda tamamlananlar
 - [x] "Bizans" → "Doğu Roma" terminolojisi (29 ders kaydında, veritabanında; Bizantion ancient city adı kasıtlı korundu)
