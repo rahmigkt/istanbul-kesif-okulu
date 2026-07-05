@@ -1,7 +1,21 @@
 # İstanbul Keşif Okulu — Yapılacaklar Listesi
 
 Bu dosya, projenin canlı, kalıcı yapılacaklar listesidir. Her oturumda güncellenir.
-Son güncelleme: 2026-07-05 (3. güncelleme)
+Son güncelleme: 2026-07-05 (4. güncelleme — gerçek kurumsal içerik entegrasyonu)
+
+## ✅ Bu turda tamamlananlar
+- [x] "Bizans" → "Doğu Roma" terminolojisi (29 ders kaydında, veritabanında; Bizantion ancient city adı kasıtlı korundu)
+- [x] Açılış sloganı: "İstanbullu Olmak, Kültürlü Olmaktır"
+- [x] Sahte demo eğitmenler (Elif Demir, Mehmet Kaya, Zeynep Aydın, Can Öz) kaldırıldı
+- [x] Gerçek eğitim kadrosundan 4 eğitmen hesabı eklendi (Prof. Dr. Mehmet Özsait/Modül I, Prof. Dr. Ahmet Kal'a/Modül II, Prof. Dr. İlber Ortaylı/Modül III, Doç. Dr. Engin Akyürek/Keşif Turları) — şifre: 1234
+- [x] Vizyon bölümü: Amaç, Misyon, Kapsam, Hedef Kitle eklendi (gerçek kurucu belge içeriği)
+- [x] Paydaşlar bölümü: 18 ek gerçek kurum/kuruluş eklendi (Kültür ve Turizm Bakanlığı, İBB, İKSV, TÜRSAB, THY, vb.)
+- [x] Yeni "Akademik Kadro" bölümü: Danışma Kurulu (6 makam), Bilim Kurulu (5 isim), Eğitim Kadrosu (28 isim), Eğitim Branşları (13 alan)
+
+## ⚠️ Kullanıcıya hatırlatma
+- Bilim Kurulu/Danışma Kurulu/Eğitim Kadrosu'ndaki isimlerin **güncel onayının/bilgisinin teyit edilmesi** önerildi (belge eski olabilir) — kullanıcı bilgilendirildi, engel olmadı.
+- Eğitim Kadrosu'ndaki 28 isimden sadece 4'üne gerçek fonksiyonel giriş hesabı açıldı (Özsait, Kal'a, Ortaylı, Akyürek); diğerleri sadece bilgilendirme amaçlı listelendi (hesapları yok).
+
 
 ---
 
