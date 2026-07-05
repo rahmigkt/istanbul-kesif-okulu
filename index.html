@@ -518,6 +518,8 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
         <li><a href="#kesif" data-i18n="nav.kesif">Keşif Turları</a></li>
         <li><a href="#yonetmelik" data-i18n="nav.yonetmelik">Yönetmelik</a></li>
         <li><a href="#hesaplayici" data-i18n="nav.hesaplayici">Hesaplayıcı</a></li>
+        <li><a href="#sss" data-i18n="nav.faq">SSS</a></li>
+        <li><a href="#iletisim" data-i18n="nav.contact">İletişim</a></li>
       </ul>
       <button class="lang-btn" onclick="toggleLang()" id="langBtn">EN</button>
       <div class="auth-controls" id="authControlsLoggedOut">
@@ -733,7 +735,44 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
   </div>
 </section>
 
+<section id="sss">
+  <div class="container">
+    <span class="eyebrow text-center" style="display:block;" data-i18n="faq.eyebrow">Sık Sorulanlar</span>
+    <h2 class="section-title reveal" data-i18n="faq.title">Sıkça Sorulan Sorular</h2>
+    <div class="rule"></div>
+    <div class="grid-2" id="faqGrid">
+      <div class="card reveal"><h3 data-i18n="faq.q1.title">✦ Programa kimler katılabilir?</h3><p data-i18n="faq.q1.body">15 yaşını doldurmuş, İstanbul'u derinlemesine tanımak isteyen herkes katılabilir. 18 yaşından küçükler için veli onayı gereklidir.</p></div>
+      <div class="card reveal"><h3 data-i18n="faq.q2.title">✦ Dersler nerede yapılıyor?</h3><p data-i18n="faq.q2.body">Teorik dersler FSMVÜ Ayasofya Kampüsü'nde, keşif turları ise şehrin ilgili tarihi mekanlarında yapılır.</p></div>
+      <div class="card reveal"><h3 data-i18n="faq.q3.title">✦ Bir dersi kaçırırsam ne olur?</h3><p data-i18n="faq.q3.body">Panelinizden mazeret belgesi yükleyip dersin videosunu %100 izleyerek dersten muaf sayılabilirsiniz; onay yönetim tarafından verilir.</p></div>
+      <div class="card reveal"><h3 data-i18n="faq.q4.title">✦ Ödemeyi nasıl yapabilirim?</h3><p data-i18n="faq.q4.body">Kayıt sırasında kurumda nakit/kart ile ödeme veya online kart seçeneklerinden birini seçebilirsiniz.</p></div>
+      <div class="card reveal"><h3 data-i18n="faq.q5.title">✦ Sertifikamı ne zaman alırım?</h3><p data-i18n="faq.q5.body">Seçtiğiniz programdaki tüm teorik ve keşif derslerine %100 katılım sağladığınızda sertifikanız için uygun hale gelirsiniz.</p></div>
+      <div class="card reveal"><h3 data-i18n="faq.q6.title">✦ Yabancı/yurt dışından katılabilir miyim?</h3><p data-i18n="faq.q6.body">Evet; canlı ders saatleri kayıt sırasında belirttiğiniz saat dilimine göre panelinizde gösterilir.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="iletisim" class="bg-dark-section">
+  <div class="container">
+    <span class="eyebrow text-center" style="display:block;" data-i18n="contact.eyebrow">Bize Ulaşın</span>
+    <h2 class="section-title reveal" data-i18n="contact.title">İletişim</h2>
+    <div class="rule"></div>
+    <p class="section-sub reveal" data-i18n="contact.desc">Program, kayıt tarihleri veya ücretlendirme hakkında sorularınız için aşağıdaki formu doldurun; size en kısa sürede dönüş yapılır.</p>
+    <div class="calculator reveal" style="max-width:640px;">
+      <div id="contactMessage"></div>
+      <div class="form-group"><label data-i18n="contact.name">Ad Soyad</label><input type="text" id="contactName"></div>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="contact.email">E-posta</label><input type="email" id="contactEmail"></div>
+        <div class="form-group"><label data-i18n="contact.phone">Telefon (opsiyonel)</label><input type="tel" id="contactPhone"></div>
+      </div>
+      <div class="form-group"><label data-i18n="contact.subject">Konu</label><input type="text" id="contactSubject"></div>
+      <div class="form-group"><label data-i18n="contact.message">Mesajınız</label><textarea id="contactMsg" rows="4"></textarea></div>
+      <button class="btn-cta" style="width:100%;padding:14px;" onclick="submitContactForm()" data-i18n="contact.submit">Gönder</button>
+    </div>
+  </div>
+</section>
+
 <footer>
+
   <div class="container">
     <h3 data-i18n="footer.title">İstanbul Keşif Okulu</h3>
     <p data-i18n="footer.tagline">Şehrin Hafızası, İnsanlığın Mirası.</p>
@@ -899,6 +938,15 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
           </div>
         </div>
 
+        <div class="form-group" style="display:flex;align-items:flex-start;gap:8px;">
+          <input type="checkbox" id="regKvkkConsent" style="width:auto;margin-top:4px;" required>
+          <label style="font-weight:400;font-size:0.86rem;" for="regKvkkConsent">
+            <span data-i18n="reg.kvkkPrefix">Kişisel verilerimin işlenmesine ilişkin</span>
+            <button type="button" class="link-btn" onclick="openGenericModal('privacyModal')" data-i18n="reg.kvkkLink">Gizlilik Metni'ni</button>
+            <span data-i18n="reg.kvkkSuffix">okudum ve kabul ediyorum.</span>
+          </label>
+        </div>
+
         <button type="submit" class="btn-cta" style="width:100%;padding:14px;font-size:0.92rem;margin-top:10px;" data-i18n="reg.submit">Kaydımı Oluştur</button>
       </form>
       <p class="small-note" data-i18n="reg.switch">Zaten bir hesabınız var mı? <button class="link-btn" onclick="closeGenericModal('registerModal'); openLoginModal();" data-i18n="reg.switchLink">Giriş yapın</button></p>
@@ -936,6 +984,7 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
         <button type="submit" class="btn-cta" style="width:100%;padding:14px;font-size:0.92rem;margin-top:6px;" data-i18n="login.submit">Giriş Yap</button>
       </form>
       <p class="small-note" id="loginStudentSwitchNote" data-i18n="login.switch">Hesabınız yok mu? <button class="link-btn" onclick="closeGenericModal('loginModal'); openRegisterModal();" data-i18n="login.switchLink">Kayıt olun</button></p>
+      <p class="small-note"><button class="link-btn" onclick="closeGenericModal('loginModal'); openForgotPasswordModal();" data-i18n="login.forgot">Şifremi unuttum</button></p>
       <div class="demo-hint" id="loginDemoHint"></div>
     </div>
   </div>
@@ -1198,6 +1247,53 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
         <label><input type="checkbox" id="newStaffOnlyExploration" style="width:auto;margin-right:6px;"> <span data-i18n="admin.staff.onlyExploration">Sadece keşif turları sorumlusu</span></label>
       </div>
       <button class="btn-cta" style="width:100%;padding:12px;" onclick="createStaffAccount()" data-i18n="admin.staff.submit">Hesabı Oluştur</button>
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div id="forgotPasswordModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 data-i18n="forgot.title">Şifremi Unuttum</h3></div>
+      <button class="close" onclick="closeGenericModal('forgotPasswordModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="small-note" data-i18n="forgot.instr">Kimliğinizi doğrulamak için kayıt e-postanızı ve doğum tarihinizi girin, ardından yeni şifrenizi belirleyin. (Not: Bu demo sistemde henüz e-posta doğrulaması yok; kimlik doğrulaması e-posta + doğum tarihi eşleşmesiyle yapılır.)</p>
+      <div id="forgotMessage"></div>
+      <div class="form-group"><label data-i18n="forgot.email">E-posta</label><input type="email" id="forgotEmail" required></div>
+      <div class="form-group"><label data-i18n="forgot.birth">Doğum Tarihi</label><input type="date" id="forgotBirth" required></div>
+      <div class="form-group"><label data-i18n="forgot.newPass">Yeni Şifre</label><input type="password" id="forgotNewPass" minlength="4" required></div>
+      <button class="btn-cta" style="width:100%;padding:12px;" onclick="submitPasswordReset()" data-i18n="forgot.submit">Şifremi Sıfırla</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT / SSS SECTION MODAL removed - built as page section instead -->
+
+<!-- KVKK / PRIVACY MODAL -->
+<div id="privacyModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="privacy.title">Gizlilik ve Kişisel Verilerin Korunması</h3></div>
+      <button class="close" onclick="closeGenericModal('privacyModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div data-i18n-html="privacy.body" style="line-height:1.9;"></div>
+      <p class="demo-hint" data-i18n="privacy.disclaimer">Bu metin genel bir bilgilendirme taslağıdır ve resmi hukuki danışmanlığın yerini tutmaz. Kurumsal kullanım öncesi bir hukuk danışmanına onaylatılması önerilir.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN: CONTACT MESSAGES MODAL -->
+<div id="adminContactModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="admin.contact.title">İletişim Mesajları</h3></div>
+      <button class="close" onclick="closeGenericModal('adminContactModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="adminContactList"><p class="small-note">Yükleniyor…</p></div>
     </div>
   </div>
 </div>
@@ -1591,7 +1687,51 @@ const MODULE_PHILOSOPHY = {
     "admin.staff.module": "Sorumlu Modül",
     "admin.staff.onlyExploration": "Sadece keşif turları sorumlusu",
     "admin.staff.submit": "Hesabı Oluştur",
-    "admin.staff.add": "+ Eğitmen/Yönetici Ekle"
+    "admin.staff.add": "+ Eğitmen/Yönetici Ekle",
+    "nav.faq": "SSS",
+    "nav.contact": "İletişim",
+    "login.forgot": "Şifremi unuttum",
+    "forgot.title": "Şifremi Unuttum",
+    "forgot.instr": "Kimliğinizi doğrulamak için kayıt e-postanızı ve doğum tarihinizi girin, ardından yeni şifrenizi belirleyin. (Not: Bu demo sistemde henüz e-posta doğrulaması yok; kimlik doğrulaması e-posta + doğum tarihi eşleşmesiyle yapılır.)",
+    "forgot.email": "E-posta",
+    "forgot.birth": "Doğum Tarihi",
+    "forgot.newPass": "Yeni Şifre",
+    "forgot.submit": "Şifremi Sıfırla",
+    "forgot.success": "Şifreniz güncellendi. Şimdi yeni şifrenizle giriş yapabilirsiniz.",
+    "forgot.notFound": "E-posta ve doğum tarihi eşleşmedi. Bilgilerinizi kontrol edin.",
+    "reg.kvkkPrefix": "Kişisel verilerimin işlenmesine ilişkin",
+    "reg.kvkkLink": "Gizlilik Metni'ni",
+    "reg.kvkkSuffix": "okudum ve kabul ediyorum.",
+    "privacy.title": "Gizlilik ve Kişisel Verilerin Korunması",
+    "privacy.body": "<p><strong>1. Veri Sorumlusu:</strong> İstanbul Keşif Okulu, kayıt sırasında paylaştığınız ad-soyad, e-posta, telefon, doğum tarihi gibi bilgileri programın yürütülmesi amacıyla işler.</p><p><strong>2. Verilerin Kullanım Amacı:</strong> Kayıt işlemleri, yoklama takibi, sertifika süreçleri ve tarafınızla iletişim kurulması amacıyla kullanılır; üçüncü taraflarla pazarlama amacıyla paylaşılmaz.</p><p><strong>3. Saklama:</strong> Verileriniz Supabase (AB/ABD sunucularında barındırılan bulut veritabanı) üzerinde şifrelenmiş şekilde saklanır.</p><p><strong>4. Haklarınız:</strong> Verilerinizin silinmesini veya düzeltilmesini talep etmek için İletişim bölümünden bize ulaşabilirsiniz.</p>",
+    "privacy.disclaimer": "Bu metin genel bir bilgilendirme taslağıdır ve resmi hukuki danışmanlığın yerini tutmaz. Kurumsal kullanım öncesi bir hukuk danışmanına onaylatılması önerilir.",
+    "admin.contact.title": "İletişim Mesajları",
+    "admin.contact.viewLink": "📩 İletişim Mesajları",
+    "admin.contact.none": "Henüz mesaj yok.",
+    "faq.eyebrow": "Sık Sorulanlar",
+    "faq.title": "Sıkça Sorulan Sorular",
+    "faq.q1.title": "✦ Programa kimler katılabilir?",
+    "faq.q1.body": "15 yaşını doldurmuş, İstanbul'u derinlemesine tanımak isteyen herkes katılabilir. 18 yaşından küçükler için veli onayı gereklidir.",
+    "faq.q2.title": "✦ Dersler nerede yapılıyor?",
+    "faq.q2.body": "Teorik dersler FSMVÜ Ayasofya Kampüsü'nde, keşif turları ise şehrin ilgili tarihi mekanlarında yapılır.",
+    "faq.q3.title": "✦ Bir dersi kaçırırsam ne olur?",
+    "faq.q3.body": "Panelinizden mazeret belgesi yükleyip dersin videosunu %100 izleyerek dersten muaf sayılabilirsiniz; onay yönetim tarafından verilir.",
+    "faq.q4.title": "✦ Ödemeyi nasıl yapabilirim?",
+    "faq.q4.body": "Kayıt sırasında kurumda nakit/kart ile ödeme veya online kart seçeneklerinden birini seçebilirsiniz.",
+    "faq.q5.title": "✦ Sertifikamı ne zaman alırım?",
+    "faq.q5.body": "Seçtiğiniz programdaki tüm teorik ve keşif derslerine %100 katılım sağladığınızda sertifikanız için uygun hale gelirsiniz.",
+    "faq.q6.title": "✦ Yabancı/yurt dışından katılabilir miyim?",
+    "faq.q6.body": "Evet; canlı ders saatleri kayıt sırasında belirttiğiniz saat dilimine göre panelinizde gösterilir.",
+    "contact.eyebrow": "Bize Ulaşın",
+    "contact.title": "İletişim",
+    "contact.desc": "Program, kayıt tarihleri veya ücretlendirme hakkında sorularınız için aşağıdaki formu doldurun; size en kısa sürede dönüş yapılır.",
+    "contact.name": "Ad Soyad",
+    "contact.email": "E-posta",
+    "contact.phone": "Telefon (opsiyonel)",
+    "contact.subject": "Konu",
+    "contact.message": "Mesajınız",
+    "contact.submit": "Gönder",
+    "contact.success": "Mesajınız iletildi, en kısa sürede dönüş yapılacaktır."
   },
   "en": {
     "brand.sub": "School of Istanbul",
@@ -1852,7 +1992,51 @@ const MODULE_PHILOSOPHY = {
     "admin.staff.module": "Responsible Module",
     "admin.staff.onlyExploration": "Exploration tours coordinator only",
     "admin.staff.submit": "Create Account",
-    "admin.staff.add": "+ Add Instructor/Admin"
+    "admin.staff.add": "+ Add Instructor/Admin",
+    "nav.faq": "FAQ",
+    "nav.contact": "Contact",
+    "login.forgot": "Forgot password",
+    "forgot.title": "Forgot Password",
+    "forgot.instr": "To verify your identity, enter your registered email and date of birth, then set a new password. (Note: this demo system has no email verification yet; identity is verified by email + date-of-birth match.)",
+    "forgot.email": "Email",
+    "forgot.birth": "Date of Birth",
+    "forgot.newPass": "New Password",
+    "forgot.submit": "Reset My Password",
+    "forgot.success": "Your password has been updated. You can now log in with your new password.",
+    "forgot.notFound": "Email and date of birth did not match. Please check your details.",
+    "reg.kvkkPrefix": "I have read and accept the",
+    "reg.kvkkLink": "Privacy Notice",
+    "reg.kvkkSuffix": "regarding the processing of my personal data.",
+    "privacy.title": "Privacy and Personal Data Protection",
+    "privacy.body": "<p><strong>1. Data Controller:</strong> The School of Istanbul processes the name, email, phone, and date of birth you share at registration for the purpose of running the programme.</p><p><strong>2. Purpose of Use:</strong> Your data is used for registration, attendance tracking, certification, and communicating with you; it is not shared with third parties for marketing.</p><p><strong>3. Storage:</strong> Your data is stored encrypted on Supabase (a cloud database hosted on EU/US servers).</p><p><strong>4. Your Rights:</strong> You may request deletion or correction of your data via the Contact section.</p>",
+    "privacy.disclaimer": "This text is a general informational draft and does not substitute for formal legal counsel. Legal review is recommended before institutional use.",
+    "admin.contact.title": "Contact Messages",
+    "admin.contact.viewLink": "📩 Contact Messages",
+    "admin.contact.none": "No messages yet.",
+    "faq.eyebrow": "Frequently Asked",
+    "faq.title": "Frequently Asked Questions",
+    "faq.q1.title": "✦ Who can join the programme?",
+    "faq.q1.body": "Anyone aged 15 or older who wants to deeply understand Istanbul may join. Parental consent is required for those under 18.",
+    "faq.q2.title": "✦ Where are the lessons held?",
+    "faq.q2.body": "Theoretical lessons are held at the FSMVÜ Hagia Sophia Campus; exploration tours take place at the relevant historic sites across the city.",
+    "faq.q3.title": "✦ What if I miss a lesson?",
+    "faq.q3.body": "You can upload an excuse document and watch 100% of the lesson video from your panel to be excused; approval is granted by staff.",
+    "faq.q4.title": "✦ How can I pay?",
+    "faq.q4.body": "At registration you can choose to pay in cash/card at the institution, or via the online card option.",
+    "faq.q5.title": "✦ When do I receive my certificate?",
+    "faq.q5.body": "You become eligible for certification once you reach 100% attendance in all theoretical and exploration lessons of your chosen programme.",
+    "faq.q6.title": "✦ Can I join from abroad?",
+    "faq.q6.body": "Yes; live lesson times are shown on your panel converted to the timezone you specify at registration.",
+    "contact.eyebrow": "Get in Touch",
+    "contact.title": "Contact",
+    "contact.desc": "For questions about the programme, registration dates, or fees, fill out the form below and we'll get back to you shortly.",
+    "contact.name": "Full Name",
+    "contact.email": "Email",
+    "contact.phone": "Phone (optional)",
+    "contact.subject": "Subject",
+    "contact.message": "Your Message",
+    "contact.submit": "Send",
+    "contact.success": "Your message has been sent, we will get back to you shortly."
   }
 }
 </script>
@@ -2278,6 +2462,83 @@ async function handleRegister(evt){
 /* ---------- login ---------- */
 let currentLoginRole = 'student';
 let currentEditorPassword = null;
+
+function openForgotPasswordModal(){
+  document.getElementById('forgotEmail').value = '';
+  document.getElementById('forgotBirth').value = '';
+  document.getElementById('forgotNewPass').value = '';
+  document.getElementById('forgotMessage').innerHTML = '';
+  openGenericModal('forgotPasswordModal');
+}
+async function submitPasswordReset(){
+  const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
+  const birth = document.getElementById('forgotBirth').value;
+  const newPass = document.getElementById('forgotNewPass').value;
+  const msgBox = document.getElementById('forgotMessage');
+  if(!email || !birth || newPass.length < 4){
+    msgBox.innerHTML = '<div class="form-error">'+(currentLang==='tr'?'Lütfen tüm alanları doldurun (şifre en az 4 karakter).':'Please fill in all fields (password at least 4 characters).')+'</div>';
+    return;
+  }
+  const { data, error } = await db.rpc('rpc_reset_student_password', { p_email: email, p_dogum_tarihi: birth, p_new_password: newPass });
+  if(error || !data){
+    msgBox.innerHTML = '<div class="form-error">'+t('forgot.notFound')+'</div>';
+    return;
+  }
+  msgBox.innerHTML = '<div class="form-success">'+t('forgot.success')+'</div>';
+  setTimeout(()=>{ closeGenericModal('forgotPasswordModal'); openLoginModal(); }, 1200);
+}
+
+/* ---------- contact form ---------- */
+async function submitContactForm(){
+  const name = document.getElementById('contactName').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const phone = document.getElementById('contactPhone').value.trim();
+  const subject = document.getElementById('contactSubject').value.trim();
+  const msg = document.getElementById('contactMsg').value.trim();
+  const msgBox = document.getElementById('contactMessage');
+  if(!name || !email || !msg){
+    msgBox.innerHTML = '<div class="form-error">'+(currentLang==='tr'?'Lütfen ad, e-posta ve mesaj alanlarını doldurun.':'Please fill in name, email, and message.')+'</div>';
+    return;
+  }
+  const { error } = await db.rpc('rpc_submit_contact_message', { p_ad_soyad: name, p_email: email, p_telefon: phone||null, p_konu: subject||null, p_mesaj: msg });
+  if(error){ msgBox.innerHTML = '<div class="form-error">Hata: '+error.message+'</div>'; return; }
+  msgBox.innerHTML = '<div class="form-success">'+t('contact.success')+'</div>';
+  document.getElementById('contactName').value = '';
+  document.getElementById('contactEmail').value = '';
+  document.getElementById('contactPhone').value = '';
+  document.getElementById('contactSubject').value = '';
+  document.getElementById('contactMsg').value = '';
+}
+
+/* ---------- admin: contact messages ---------- */
+async function resetStaffPasswordPrompt(staffId, staffName){
+  const newPass = prompt((currentLang==='tr'?staffName+' için yeni şifre girin:':'Enter new password for '+staffName+':'));
+  if(!newPass || newPass.length < 4){
+    if(newPass !== null) alert(currentLang==='tr'?'Şifre en az 4 karakter olmalı.':'Password must be at least 4 characters.');
+    return;
+  }
+  const session = getSession();
+  const { error } = await db.rpc('rpc_admin_reset_staff_password', { p_admin_id: session.id, p_staff_id: staffId, p_new_password: newPass });
+  if(error){ alert('Hata: '+error.message); return; }
+  alert(currentLang==='tr'?'Şifre güncellendi.':'Password updated.');
+}
+
+async function openAdminContactModal(){
+  openGenericModal('adminContactModal');
+  const listEl = document.getElementById('adminContactList');
+  listEl.innerHTML = '<p class="small-note">Yükleniyor…</p>';
+  const session = getSession();
+  const { data, error } = await db.rpc('rpc_admin_get_contact_messages', { p_admin_id: session.id });
+  if(error || !data || !data.length){ listEl.innerHTML = '<p class="small-note">'+t('admin.contact.none')+'</p>'; return; }
+  listEl.innerHTML = data.map(m=>{
+    const dt = new Date(m.created_at).toLocaleString(currentLang==='tr'?'tr-TR':'en-US');
+    return '<div class="dash-list-item"><div class="info"><div class="title">'+m.ad_soyad+' — '+(m.konu||'')+'</div>'+
+      '<div class="sub">'+m.email+(m.telefon?' · '+m.telefon:'')+' · '+dt+'</div>'+
+      '<div class="small-note" style="margin-top:6px;">'+m.mesaj+'</div></div></div>';
+  }).join('');
+  refreshNotifBadge();
+}
+
 function openLoginModal(){
   document.getElementById('loginForm').reset();
   document.getElementById('loginMessage').innerHTML = '';
@@ -2784,6 +3045,7 @@ async function renderStaffDashboard(){
   const myStudents = (dash && dash.students) || [];
   const ratingsDetail = (dash && dash.ratings) || [];
   const totalStudents = (dash && dash.total_students) || 0;
+  const unreadContactCount = (dash && dash.unread_contact_count) || 0;
   const allStaffOverview = (dash && dash.all_staff_overview) || null;
 
   const name = currentLang==='tr' ? staffMember.ad_soyad_tr : staffMember.ad_soyad_en;
@@ -2857,12 +3119,16 @@ async function renderStaffDashboard(){
     html += '<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">'+
       '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openAdminStudentsModal()">👥 '+t('admin.staff.manage')+'</button>'+
       '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openCreateStaffModal()">'+t('admin.staff.add')+'</button>'+
+      '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openAdminContactModal()">'+t('admin.contact.viewLink')+(unreadContactCount>0?' ('+unreadContactCount+')':'')+'</button>'+
     '</div>';
     allStaffOverview.forEach(sm=>{
       const a = sm.avg_rating;
       const nm = currentLang==='tr' ? sm.ad_soyad_tr : sm.ad_soyad_en;
       const uv = currentLang==='tr' ? sm.unvan_tr : sm.unvan_en;
-      html += '<div class="dash-list-item"><div class="info"><div class="title">'+nm+'</div><div class="sub">'+uv+'</div></div><div class="dash-actions"><span class="chk-badge '+(a?'done':'pending')+'">'+(a?Number(a).toFixed(1)+' / 5':'—')+'</span></div></div>';
+      html += '<div class="dash-list-item"><div class="info"><div class="title">'+nm+'</div><div class="sub">'+uv+'</div></div><div class="dash-actions">'+
+        '<span class="chk-badge '+(a?'done':'pending')+'">'+(a?Number(a).toFixed(1)+' / 5':'—')+'</span>'+
+        '<button class="btn-ghost" style="font-size:0.68rem;padding:5px 8px;color:var(--ink);border-color:var(--border-color);" onclick="resetStaffPasswordPrompt(\''+sm.id+'\',\''+nm.replace(/'/g,"\\'")+'\')">🔑</button>'+
+      '</div></div>';
     });
     html += '</div>';
   }
