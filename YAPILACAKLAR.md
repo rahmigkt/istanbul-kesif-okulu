@@ -1,7 +1,27 @@
 # İstanbul Keşif Okulu — Yapılacaklar Listesi
 
 Bu dosya, projenin canlı, kalıcı yapılacaklar listesidir. Her oturumda güncellenir.
-Son güncelleme: 2026-07-05 (5. güncelleme — gerçek kişi isimleri geri alındı)
+Son güncelleme: 2026-07-06 (6. güncelleme — hosting kararı)
+
+## 🚧 ŞU AN AKTİF DURUM: Barındırma (hosting) geçişi bekleniyor
+
+**Sorun:** Netlify ücretsiz kotası bitti (deploy/otomatik yayın devre dışı kaldı) → GitHub Pages'e geçildi (ücretsiz, sınırsız) → ama GitHub Pages'te SSL sertifika çakışması yaşandı (`NET::ERR_CERT_COMMON_NAME_INVALID` hatası, hem http hem https'te). DNS kayıtları doğru (kontrol edildi, GitHub'ın IP'lerine işaret ediyor), ama sertifika sorunu çözülemedi.
+
+**Karar:** Kullanıcı bu ücretsiz zincirleme yerine **gerçek bir hosting paketi satın almaya** karar verdi (muhtemelen Natro'dan, akşam alınacak). Böylece:
+- Netlify/GitHub Pages'e artık gerek kalmayacak
+- cPanel üzerinden doğrudan dosya yüklenecek
+- Birden fazla e-posta kutusu (bilgi@, kayit@, destek@, info@, yonetim@ — daha önce planlanmıştı) aynı pakette olacak
+
+**Hosting alındığında yapılacaklar (sırayla):**
+1. Hosting paketi aktif olunca, `index.html` dosyasını (GitHub deposundaki güncel hali) cPanel/Dosya Yöneticisi ile `public_html` klasörüne yükle
+2. Natro'daki DNS ayarlarını temizle: GitHub Pages'e yönlendirdiğimiz 4 A kaydı (185.199.108-111.153) ve www CNAME (rahmigkt.github.io) kaldırılıp, hosting'in kendi nameserver'larına veya IP'sine geri döndürülecek (hosting genelde otomatik ayarlar, kontrol edilecek)
+3. Yeni hosting'deki e-posta kutularını kur (5 adet planlanmıştı)
+4. GitHub deposu (`rahmigkt/istanbul-kesif-okulu`) ve Supabase veritabanı **aynen kullanılmaya devam edecek** — sadece "nerede yayınlandığı" değişiyor, kod ve veritabanı sabit kalıyor
+5. GitHub Pages ayarını (Settings → Pages) kapatmak isterse "None" seçilebilir (opsiyonel temizlik)
+
+---
+
+
 
 ## ✅ Bu turda tamamlananlar
 - [x] **Paydaşlar bölümü tamamen kaldırıldı** (FSMVÜ, Valilik, Kültür Müdürlüğü, Vakıflar dahil — onaylanmamış kurumsal iş birliği iddiaları)
