@@ -1,7 +1,21 @@
 # İstanbul Keşif Okulu — Yapılacaklar Listesi
 
 Bu dosya, projenin canlı, kalıcı yapılacaklar listesidir. Her oturumda güncellenir.
-Son güncelleme: 2026-07-06 (6. güncelleme — hosting kararı)
+Son güncelleme: 2026-07-07 (7. güncelleme — CRM/ERP çekirdek özellikleri eklendi)
+
+## ✅ Bu turda tamamlananlar (araştırmaya dayalı, standart eğitim kurumu CRM/ERP özellikleri)
+- [x] **Lead/Aday Pipeline** — İletişim formu artık tam bir CRM huni (Yeni → Aranacak → Görüşüldü → Kayıt Oldu / İlgilenmiyor), takip tarihi ve not alanlarıyla
+- [x] **Etkileşim/Görüşme Geçmişi (Activity Log)** — Her aday/öğrenci için arama/e-posta/görüşme/not kaydı, kim ne zaman yaptı görünür
+- [x] **Görev Yönetimi (Tasks)** — Her personelin kendi görev listesi (ekle/tamamla/sil)
+- [x] **Admin Analiz Paneli** — Aylık kayıt trendi (grafik), program dağılımı, toplam gelir, ortalama katılım, aday hunisi
+- [x] **Mezun Takibi (Alumni)** — Sertifikaya hak kazanan öğrenciler admin tarafından "mezun" ilan edilebiliyor, ayrı mezunlar listesi
+- [x] **Sertifika Görüntüleme/Yazdırma** — Uygun öğrenciler kendi panelinden "İstanbulluluk Sertifikası"nı görüntüleyip yazdırabiliyor (PDF olarak da kaydedilebilir)
+- [x] Ayrıca daha önce: içerik editörü (editor.html), Hocalarımız sayfası + Supabase tablosu
+
+## 📌 Yükleme durumu
+Bu son güncelleme (CRM/ERP) **GitHub'a işlendi ama henüz Natro hosting'ine yüklenmedi** — kullanıcının cPanel Dosya Yöneticisi'nden `index.html`'i indirip `public_html`'e yüklemesi gerekiyor (biz artık Netlify/GitHub Pages değil, doğrudan Natro hosting kullanıyoruz, otomatik deploy yok).
+
+
 
 ## 🚧 ŞU AN AKTİF DURUM: Barındırma (hosting) geçişi bekleniyor
 
