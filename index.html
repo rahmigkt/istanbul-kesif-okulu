@@ -1343,6 +1343,124 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
   </div>
 </div>
 
+<!-- ADMIN: ANALYTICS MODAL -->
+<div id="analyticsModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="admin.analytics.title">Analiz Paneli</h3></div>
+      <button class="close" onclick="closeGenericModal('analyticsModal')">&times;</button>
+    </div>
+    <div class="modal-body"><div id="analyticsBody"><p class="small-note">Yükleniyor…</p></div></div>
+  </div>
+</div>
+
+<!-- ADMIN: LEADS (ADAY YÖNETİMİ) MODAL -->
+<div id="leadsModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="admin.leads.title">Aday Yönetimi (Lead Takibi)</h3></div>
+      <button class="close" onclick="closeGenericModal('leadsModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;" id="leadFilterBar"></div>
+      <div id="leadsBody"><p class="small-note">Yükleniyor…</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- LEAD DETAY MODAL -->
+<div id="leadDetailModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 id="leadDetailTitle">Aday Detayı</h3></div>
+      <button class="close" onclick="closeGenericModal('leadDetailModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="leadDetailId">
+      <p class="small-note" id="leadDetailContact"></p>
+      <div class="form-group">
+        <label data-i18n="admin.leads.status">Durum</label>
+        <select id="leadStatus">
+          <option value="yeni">Yeni</option>
+          <option value="aranacak">Aranacak</option>
+          <option value="gorusuldu">Görüşüldü</option>
+          <option value="kayit_oldu">Kayıt Oldu</option>
+          <option value="ilgilenmiyor">İlgilenmiyor</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label data-i18n="admin.leads.followUp">Takip Tarihi</label>
+        <input type="date" id="leadFollowUp">
+      </div>
+      <div class="form-group">
+        <label data-i18n="admin.leads.notes">Notlar</label>
+        <textarea id="leadNotes" rows="3"></textarea>
+      </div>
+      <button class="btn-cta" style="width:100%;padding:10px;margin-bottom:16px;" onclick="saveLeadDetail()" data-i18n="admin.leads.save">Kaydet</button>
+      <h4 data-i18n="admin.leads.activityLog">Görüşme Geçmişi</h4>
+      <div id="leadActivityList" style="margin-bottom:12px;"></div>
+      <div class="form-row">
+        <select id="leadActivityType" style="flex:0 0 130px;">
+          <option value="call">📞 Arama</option>
+          <option value="email">✉️ E-posta</option>
+          <option value="meeting">🤝 Görüşme</option>
+          <option value="note">📝 Not</option>
+        </select>
+        <input type="text" id="leadActivityNote" placeholder="Kısa not...">
+      </div>
+      <button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="addLeadActivity()" data-i18n="admin.leads.addActivity">+ Ekle</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN: ALUMNI MODAL -->
+<div id="alumniModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="admin.alumni.title">Mezunlar</h3></div>
+      <button class="close" onclick="closeGenericModal('alumniModal')">&times;</button>
+    </div>
+    <div class="modal-body"><div id="alumniBody"><p class="small-note">Yükleniyor…</p></div></div>
+  </div>
+</div>
+
+<!-- YENİ GÖREV MODAL -->
+<div id="newTaskModal" class="modal">
+  <div class="modal-content medium">
+    <div class="modal-header">
+      <div><h3 data-i18n="tasks.newTitle">Yeni Görev</h3></div>
+      <button class="close" onclick="closeGenericModal('newTaskModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label data-i18n="tasks.taskTitle">Başlık</label><input type="text" id="taskTitle"></div>
+      <div class="form-group"><label data-i18n="tasks.taskDesc">Açıklama</label><textarea id="taskDesc" rows="3"></textarea></div>
+      <div class="form-group"><label data-i18n="tasks.taskDue">Son Tarih</label><input type="date" id="taskDue"></div>
+      <button class="btn-cta" style="width:100%;padding:10px;" onclick="createNewTask()" data-i18n="tasks.create">Görevi Oluştur</button>
+    </div>
+  </div>
+</div>
+
+<!-- SERTİFİKA GÖRÜNTÜLEME (öğrenci tarafı) -->
+<div id="certificateViewModal" class="modal">
+  <div class="modal-content wide">
+    <div class="modal-header">
+      <div><h3 data-i18n="cert.view.title">İstanbulluluk Sertifikası</h3></div>
+      <button class="close" onclick="closeGenericModal('certificateViewModal')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="certificatePrintArea" style="border:8px double var(--gold);padding:50px 40px;text-align:center;background:#fffdf7;">
+        <div style="font-family:var(--display);color:var(--gold-deep);letter-spacing:2px;font-size:0.85rem;" data-i18n="cert.view.eyebrow">İSTANBUL KEŞİF OKULU</div>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-size:2.4rem;margin:18px 0;color:var(--ink);" data-i18n="cert.view.heading">İstanbulluluk Sertifikası</h1>
+        <p style="font-size:1.1rem;margin:20px 0;" data-i18n="cert.view.presented">İşbu belge</p>
+        <div id="certStudentName" style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold-deep);font-style:italic;margin:14px 0;"></div>
+        <p style="max-width:520px;margin:14px auto;" data-i18n="cert.view.body">adlı katılımcının İstanbul Keşif Okulu programını başarıyla tamamlayarak "Şehir Kültürü Uzmanlığı" seviyesine ulaştığını tasdik eder.</p>
+        <div id="certDate" style="margin-top:30px;font-size:0.9rem;color:#888;"></div>
+      </div>
+      <button class="btn-cta" style="width:100%;padding:12px;margin-top:16px;" onclick="window.print()" data-i18n="cert.view.print">🖨 Yazdır / PDF Olarak Kaydet</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ================= SUPABASE CLIENT ================= */
@@ -1770,6 +1888,32 @@ const MODULE_PHILOSOPHY = {
     "admin.contact.title": "İletişim Mesajları",
     "admin.contact.viewLink": "📩 İletişim Mesajları",
     "admin.contact.none": "Henüz mesaj yok.",
+    "admin.analytics.link": "📊 Analiz Paneli",
+    "admin.analytics.title": "Analiz Paneli",
+    "admin.leads.link": "🎯 Aday Yönetimi",
+    "admin.leads.title": "Aday Yönetimi (Lead Takibi)",
+    "admin.leads.status": "Durum",
+    "admin.leads.followUp": "Takip Tarihi",
+    "admin.leads.notes": "Notlar",
+    "admin.leads.save": "Kaydet",
+    "admin.leads.activityLog": "Görüşme Geçmişi",
+    "admin.leads.addActivity": "+ Ekle",
+    "admin.alumni.link": "🎓 Mezunlar",
+    "admin.alumni.title": "Mezunlar",
+    "tasks.title": "Görevlerim",
+    "tasks.add": "Yeni Görev",
+    "tasks.newTitle": "Yeni Görev",
+    "tasks.taskTitle": "Başlık",
+    "tasks.taskDesc": "Açıklama",
+    "tasks.taskDue": "Son Tarih",
+    "tasks.create": "Görevi Oluştur",
+    "cert.view.button": "Sertifikamı Görüntüle",
+    "cert.view.title": "İstanbulluluk Sertifikası",
+    "cert.view.eyebrow": "İSTANBUL KEŞİF OKULU",
+    "cert.view.heading": "İstanbulluluk Sertifikası",
+    "cert.view.presented": "İşbu belge",
+    "cert.view.body": "adlı katılımcının İstanbul Keşif Okulu programını başarıyla tamamlayarak \"Şehir Kültürü Uzmanlığı\" seviyesine ulaştığını tasdik eder.",
+    "cert.view.print": "🖨 Yazdır / PDF Olarak Kaydet",
     "faq.eyebrow": "Sık Sorulanlar",
     "faq.title": "Sıkça Sorulan Sorular",
     "faq.q1.title": "✦ Programa kimler katılabilir?",
@@ -2104,6 +2248,32 @@ const MODULE_PHILOSOPHY = {
     "admin.contact.title": "Contact Messages",
     "admin.contact.viewLink": "📩 Contact Messages",
     "admin.contact.none": "No messages yet.",
+    "admin.analytics.link": "📊 Analytics",
+    "admin.analytics.title": "Analytics Dashboard",
+    "admin.leads.link": "🎯 Lead Management",
+    "admin.leads.title": "Lead Management",
+    "admin.leads.status": "Status",
+    "admin.leads.followUp": "Follow-up Date",
+    "admin.leads.notes": "Notes",
+    "admin.leads.save": "Save",
+    "admin.leads.activityLog": "Interaction History",
+    "admin.leads.addActivity": "+ Add",
+    "admin.alumni.link": "🎓 Alumni",
+    "admin.alumni.title": "Alumni",
+    "tasks.title": "My Tasks",
+    "tasks.add": "New Task",
+    "tasks.newTitle": "New Task",
+    "tasks.taskTitle": "Title",
+    "tasks.taskDesc": "Description",
+    "tasks.taskDue": "Due Date",
+    "tasks.create": "Create Task",
+    "cert.view.button": "View My Certificate",
+    "cert.view.title": "Istanbul Citizenship Certificate",
+    "cert.view.eyebrow": "SCHOOL OF ISTANBUL",
+    "cert.view.heading": "Istanbul Citizenship Certificate",
+    "cert.view.presented": "This certifies that",
+    "cert.view.body": "has successfully completed the School of Istanbul programme and attained the level of \"Urban-Culture Expertise\".",
+    "cert.view.print": "🖨 Print / Save as PDF",
     "faq.eyebrow": "Frequently Asked",
     "faq.title": "Frequently Asked Questions",
     "faq.q1.title": "✦ Who can join the programme?",
@@ -2667,6 +2837,209 @@ async function openAdminContactModal(){
   refreshNotifBadge();
 }
 
+/* ================= ADMIN: ANALYTICS DASHBOARD ================= */
+async function openAnalyticsModal(){
+  openGenericModal('analyticsModal');
+  const session = getSession();
+  const body = document.getElementById('analyticsBody');
+  body.innerHTML = '<p class="small-note">Yükleniyor…</p>';
+  const { data, error } = await db.rpc('rpc_admin_get_analytics', { p_admin_id: session.id });
+  if(error || !data){ body.innerHTML = '<p class="small-note">Hata</p>'; return; }
+  let html = '<div class="dash-stats">'+
+    '<div class="dash-stat-card"><div class="num">'+data.total_students+'</div><div class="lbl">Toplam Öğrenci</div></div>'+
+    '<div class="dash-stat-card"><div class="num">'+data.total_graduated+'</div><div class="lbl">Mezun</div></div>'+
+    '<div class="dash-stat-card"><div class="num">'+Number(data.total_revenue).toLocaleString('tr-TR')+' $</div><div class="lbl">Toplam Gelir (beyan)</div></div>'+
+    '<div class="dash-stat-card"><div class="num">%'+data.avg_attendance_pct+'</div><div class="lbl">Ort. Katılım</div></div>'+
+  '</div>';
+
+  html += '<h4 style="margin-top:20px;">Aylık Kayıt Trendi</h4>';
+  if(data.registrations_by_month.length){
+    const maxCount = Math.max(...data.registrations_by_month.map(r=>r.count));
+    html += '<div style="display:flex;align-items:flex-end;gap:8px;height:120px;border-bottom:2px solid var(--border-color);padding-bottom:4px;">';
+    data.registrations_by_month.forEach(r=>{
+      const h = Math.max(6, Math.round((r.count/maxCount)*100));
+      html += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;">'+
+        '<div style="font-size:0.7rem;margin-bottom:4px;">'+r.count+'</div>'+
+        '<div style="width:100%;background:var(--tile-teal);height:'+h+'px;border-radius:4px 4px 0 0;"></div>'+
+        '<div class="small-note" style="margin-top:4px;font-size:0.68rem;">'+r.month+'</div>'+
+      '</div>';
+    });
+    html += '</div>';
+  } else { html += '<p class="small-note">Henüz veri yok.</p>'; }
+
+  html += '<h4 style="margin-top:20px;">Program Dağılımı</h4>';
+  html += data.program_distribution.map(p=>
+    '<div class="dash-list-item"><div class="info"><div class="title">'+programLabel(p.program, currentLang)+'</div></div><span class="chk-badge done">'+p.count+'</span></div>'
+  ).join('') || '<p class="small-note">Veri yok.</p>';
+
+  html += '<h4 style="margin-top:20px;">Aday Hunisi (Lead Funnel)</h4>';
+  const statusLabels2 = { yeni:'Yeni', aranacak:'Aranacak', gorusuldu:'Görüşüldü', kayit_oldu:'Kayıt Oldu', ilgilenmiyor:'İlgilenmiyor' };
+  html += data.lead_funnel.length ? data.lead_funnel.map(f=>
+    '<div class="dash-list-item"><div class="info"><div class="title">'+(statusLabels2[f.status]||f.status)+'</div></div><span class="chk-badge pending">'+f.count+'</span></div>'
+  ).join('') : '<p class="small-note">Henüz aday yok.</p>';
+
+  body.innerHTML = html;
+}
+
+/* ================= ADMIN: LEADS (ADAY YÖNETİMİ) ================= */
+let allLeadsCache = [];
+async function openLeadsModal(){
+  openGenericModal('leadsModal');
+  await loadLeads(null);
+  document.getElementById('leadFilterBar').innerHTML = ['yeni','aranacak','gorusuldu','kayit_oldu','ilgilenmiyor'].map(s=>
+    '<button class="btn-ghost" style="font-size:0.76rem;padding:6px 12px;color:var(--ink);border-color:var(--border-color);" onclick="loadLeads(\''+s+'\')">'+
+    ({yeni:'Yeni',aranacak:'Aranacak',gorusuldu:'Görüşüldü',kayit_oldu:'Kayıt Oldu',ilgilenmiyor:'İlgilenmiyor'})[s]+'</button>'
+  ).join('') + '<button class="btn-ghost" style="font-size:0.76rem;padding:6px 12px;color:var(--ink);border-color:var(--border-color);" onclick="loadLeads(null)">Tümü</button>';
+}
+async function loadLeads(status){
+  const session = getSession();
+  const body = document.getElementById('leadsBody');
+  body.innerHTML = '<p class="small-note">Yükleniyor…</p>';
+  const { data, error } = await db.rpc('rpc_admin_list_leads', { p_admin_id: session.id, p_status: status });
+  if(error){ body.innerHTML = '<p class="small-note">Hata: '+error.message+'</p>'; return; }
+  allLeadsCache = data || [];
+  const statusLabels = { yeni:'🆕 Yeni', aranacak:'📞 Aranacak', gorusuldu:'✅ Görüşüldü', kayit_oldu:'🎉 Kayıt Oldu', ilgilenmiyor:'✖ İlgilenmiyor' };
+  if(!allLeadsCache.length){ body.innerHTML = '<p class="small-note">Aday bulunamadı.</p>'; return; }
+  body.innerHTML = allLeadsCache.map(l=>{
+    const dt = new Date(l.created_at).toLocaleDateString('tr-TR');
+    return '<div class="dash-list-item" style="cursor:pointer;" onclick="openLeadDetail('+l.id+')"><div class="info">'+
+      '<div class="title">'+l.ad_soyad+' — '+(l.konu||'')+'</div>'+
+      '<div class="sub">'+l.email+' · '+dt+(l.follow_up_date?' · Takip: '+l.follow_up_date:'')+'</div>'+
+    '</div><span class="chk-badge pending">'+(statusLabels[l.status]||l.status)+'</span></div>';
+  }).join('');
+}
+async function openLeadDetail(id){
+  const l = allLeadsCache.find(x=>x.id===id);
+  if(!l) return;
+  document.getElementById('leadDetailId').value = id;
+  document.getElementById('leadDetailTitle').textContent = l.ad_soyad;
+  document.getElementById('leadDetailContact').textContent = l.email + (l.telefon?' · '+l.telefon:'') + ' — "' + l.mesaj + '"';
+  document.getElementById('leadStatus').value = l.status;
+  document.getElementById('leadFollowUp').value = l.follow_up_date || '';
+  document.getElementById('leadNotes').value = l.internal_notes || '';
+  openGenericModal('leadDetailModal');
+  await loadLeadActivity(id);
+}
+async function saveLeadDetail(){
+  const session = getSession();
+  const id = parseInt(document.getElementById('leadDetailId').value, 10);
+  const { error } = await db.rpc('rpc_admin_update_lead', {
+    p_admin_id: session.id, p_lead_id: id,
+    p_status: document.getElementById('leadStatus').value,
+    p_assigned_staff_id: session.id,
+    p_follow_up_date: document.getElementById('leadFollowUp').value || null,
+    p_internal_notes: document.getElementById('leadNotes').value || null
+  });
+  if(error){ alert('Kaydedilemedi'); return; }
+  closeGenericModal('leadDetailModal');
+  await loadLeads(null);
+}
+async function loadLeadActivity(id){
+  const session = getSession();
+  const listEl = document.getElementById('leadActivityList');
+  const { data } = await db.rpc('rpc_get_activity', { p_staff_id: session.id, p_related_type: 'lead', p_related_id: String(id) });
+  const icons = { call:'📞', email:'✉️', meeting:'🤝', note:'📝' };
+  listEl.innerHTML = (data && data.length) ? data.map(a=>
+    '<div class="small-note" style="margin-bottom:6px;">'+icons[a.activity_type]+' <strong>'+(a.staff_name||'')+'</strong> — '+(a.note||'')+' <span style="opacity:.6;">('+new Date(a.created_at).toLocaleString('tr-TR')+')</span></div>'
+  ).join('') : '<p class="small-note">Henüz kayıt yok.</p>';
+}
+async function addLeadActivity(){
+  const session = getSession();
+  const id = document.getElementById('leadDetailId').value;
+  const note = document.getElementById('leadActivityNote').value.trim();
+  if(!note) return;
+  await db.rpc('rpc_add_activity', {
+    p_staff_id: session.id, p_related_type: 'lead', p_related_id: id,
+    p_activity_type: document.getElementById('leadActivityType').value, p_note: note
+  });
+  document.getElementById('leadActivityNote').value = '';
+  await loadLeadActivity(id);
+}
+
+/* ================= ADMIN: ALUMNI (MEZUNLAR) ================= */
+async function openAlumniModal(){
+  openGenericModal('alumniModal');
+  const session = getSession();
+  const body = document.getElementById('alumniBody');
+  body.innerHTML = '<p class="small-note">Yükleniyor…</p>';
+  const { data, error } = await db.rpc('rpc_admin_list_alumni', { p_admin_id: session.id });
+  if(error){ body.innerHTML = '<p class="small-note">Hata</p>'; return; }
+  let html = '<p class="small-note">Sertifikaya hak kazanmış öğrencileri Öğrenci Yönetimi ekranından "Mezun İlan Et" ile işaretleyin; mezunlar burada listelenir.</p>';
+  if(!data || !data.length){ html += '<p class="small-note">Henüz mezun yok.</p>'; }
+  else {
+    html += data.map(a=>
+      '<div class="dash-list-item"><div class="info"><div class="title">'+a.ad_soyad+'</div>'+
+      '<div class="sub">'+a.email+' · '+programLabel(a.program,currentLang)+' · Mezuniyet: '+new Date(a.graduated_at).toLocaleDateString('tr-TR')+'</div></div></div>'
+    ).join('');
+  }
+  body.innerHTML = html;
+}
+async function markStudentGraduated(studentId){
+  const session = getSession();
+  const { error } = await db.rpc('rpc_admin_mark_graduated', { p_admin_id: session.id, p_student_id: studentId });
+  if(error){
+    alert(error.message.includes('NOT_ELIGIBLE') ? 'Bu öğrenci henüz tüm derslere %100 katılım sağlamadığı için mezun ilan edilemez.' : 'Hata: '+error.message);
+    return;
+  }
+  alert('Öğrenci mezun olarak işaretlendi.');
+  await loadAdminStudents();
+}
+
+/* ================= GÖREVLER (TASKS) ================= */
+async function loadMyTasks(staffId){
+  const box = document.getElementById('myTasksBox');
+  if(!box) return;
+  const { data, error } = await db.rpc('rpc_get_my_tasks', { p_staff_id: staffId });
+  if(error || !data || !data.length){ box.innerHTML = '<p class="small-note">Görev yok.</p>'; return; }
+  box.innerHTML = data.map(tsk=>
+    '<div class="dash-list-item" style="'+(tsk.is_done?'opacity:.55;':'')+'"><div class="info">'+
+      '<div class="title" style="'+(tsk.is_done?'text-decoration:line-through;':'')+'">'+tsk.title+'</div>'+
+      '<div class="sub">'+(tsk.description||'')+(tsk.due_date?' · Son: '+tsk.due_date:'')+'</div></div>'+
+      '<div class="dash-actions">'+
+        '<button class="btn-ghost" style="font-size:0.7rem;padding:5px 10px;color:var(--ink);border-color:var(--border-color);" onclick="toggleMyTask('+tsk.id+')">'+(tsk.is_done?'Geri Al':'Tamamla')+'</button>'+
+        '<button class="btn-ghost" style="font-size:0.7rem;padding:5px 8px;color:var(--tile-coral);border-color:var(--tile-coral);" onclick="deleteMyTask('+tsk.id+')">Sil</button>'+
+      '</div></div>'
+  ).join('');
+}
+function openNewTaskModal(){
+  document.getElementById('taskTitle').value = '';
+  document.getElementById('taskDesc').value = '';
+  document.getElementById('taskDue').value = '';
+  openGenericModal('newTaskModal');
+}
+async function createNewTask(){
+  const session = getSession();
+  const title = document.getElementById('taskTitle').value.trim();
+  if(!title){ alert('Lütfen bir başlık girin.'); return; }
+  await db.rpc('rpc_create_task', {
+    p_staff_id: session.id, p_title: title,
+    p_description: document.getElementById('taskDesc').value.trim() || null,
+    p_due_date: document.getElementById('taskDue').value || null,
+    p_related_type: null, p_related_id: null
+  });
+  closeGenericModal('newTaskModal');
+  await loadMyTasks(session.id);
+}
+async function toggleMyTask(taskId){
+  const session = getSession();
+  await db.rpc('rpc_toggle_task', { p_staff_id: session.id, p_task_id: taskId });
+  await loadMyTasks(session.id);
+}
+async function deleteMyTask(taskId){
+  const session = getSession();
+  await db.rpc('rpc_delete_task', { p_staff_id: session.id, p_task_id: taskId });
+  await loadMyTasks(session.id);
+}
+
+/* ================= SERTİFİKA GÖRÜNTÜLEME (öğrenci) ================= */
+function openCertificateView(){
+  const session = getSession();
+  if(!session || session.role !== 'student') return;
+  document.getElementById('certStudentName').textContent = session.profile.ad_soyad;
+  document.getElementById('certDate').textContent = new Date().toLocaleDateString(currentLang==='tr'?'tr-TR':'en-US');
+  openGenericModal('certificateViewModal');
+}
+
 function openLoginModal(){
   document.getElementById('loginForm').reset();
   document.getElementById('loginMessage').innerHTML = '';
@@ -2805,6 +3178,7 @@ async function loadAdminStudents(){
       '<div class="sub">'+s.email+' · '+programLabel(s.program,currentLang)+' · '+dt+'</div></div>'+
       '<div class="dash-actions">'+
         '<button class="btn-ghost" style="font-size:0.7rem;padding:6px 10px;color:var(--ink);border-color:var(--border-color);" onclick="toggleStudentActive(\''+s.id+'\','+(s.is_active!==false)+')">'+(s.is_active===false?t('admin.students.unfreeze'):t('admin.students.freeze'))+'</button>'+
+        '<button class="btn-ghost" style="font-size:0.7rem;padding:6px 10px;color:var(--ok,#1f7a7a);border-color:#1f7a7a;" onclick="markStudentGraduated(\''+s.id+'\')">🎓 Mezun İlan Et</button>'+
         '<button class="btn-ghost" style="font-size:0.7rem;padding:6px 10px;color:var(--tile-coral);border-color:var(--tile-coral);" onclick="deleteStudentAccount(\''+s.id+'\')">'+t('admin.students.delete')+'</button>'+
       '</div>'+
     '</div>';
@@ -2935,6 +3309,7 @@ async function renderStudentDashboard(){
     '<div class="progress-bar"><div class="progress-bar-fill" style="width:'+cert.field_pct+'%;"></div></div>'+
     '<div class="small-note">'+cert.field_ok+' / '+cert.field_total+' ('+cert.field_pct+'%)</div>'+
     '<div class="small-note" style="margin-top:12px;font-weight:700;color:'+(cert.eligible?'#1f5c33':'var(--gold-deep)')+';">'+(cert.eligible?t('cert.status.eligible'):t('cert.status.notEligible'))+'</div>'+
+    (cert.eligible ? '<button class="btn-cta" style="margin-top:12px;padding:10px 18px;" onclick="openCertificateView()">🎓 '+t('cert.view.button')+'</button>' : '')+
   '</div>';
 
   html += '<div class="dash-section"><h4>'+t('sdash.requirements')+'</h4>';
@@ -3214,6 +3589,8 @@ async function renderStaffDashboard(){
   }
   html += '</div>';
 
+  html += '<div class="dash-section"><h4>✅ '+t('tasks.title')+'</h4><button class="btn-ghost" style="margin-bottom:10px;color:var(--ink);border-color:var(--border-color);" onclick="openNewTaskModal()">+ '+t('tasks.add')+'</button><div id="myTasksBox"><p class="small-note">Yükleniyor…</p></div></div>';
+
   html += '<div class="dash-section"><h4>'+t('staff.excuses.title')+'</h4><div id="pendingExcusesBox"><p class="small-note">Yükleniyor…</p></div></div>';
 
   html += '<div class="dash-section"><h4>'+t('tdash.students')+'</h4>';
@@ -3248,6 +3625,9 @@ async function renderStaffDashboard(){
       '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openAdminStudentsModal()">👥 '+t('admin.staff.manage')+'</button>'+
       '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openCreateStaffModal()">'+t('admin.staff.add')+'</button>'+
       '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openAdminContactModal()">'+t('admin.contact.viewLink')+(unreadContactCount>0?' ('+unreadContactCount+')':'')+'</button>'+
+      '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openAnalyticsModal()">📊 '+t('admin.analytics.link')+'</button>'+
+      '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openLeadsModal()">🎯 '+t('admin.leads.link')+'</button>'+
+      '<button class="btn-ghost" style="color:var(--ink);border-color:var(--border-color);" onclick="openAlumniModal()">🎓 '+t('admin.alumni.link')+'</button>'+
     '</div>';
     allStaffOverview.forEach(sm=>{
       const a = sm.avg_rating;
@@ -3264,6 +3644,7 @@ async function renderStaffDashboard(){
   document.getElementById('staffDashTitle').textContent = name;
   document.getElementById('staffDashBody').innerHTML = html;
   loadPendingExcuses(session.id);
+  loadMyTasks(session.id);
 }
 
 async function loadPendingExcuses(staffId){
