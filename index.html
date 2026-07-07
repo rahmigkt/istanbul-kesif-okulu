@@ -512,6 +512,7 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
       </button>
       <ul class="nav-links" id="navLinks">
         <li><a href="#akademik-kadro" data-i18n="nav.kadro">Akademik Kadro</a></li>
+        <li><a href="#hocalarimiz" data-i18n="nav.hocalar">Hocalarımız</a></li>
         <li><a href="#vizyon" data-i18n="nav.vizyon">Vizyon</a></li>
         <li><a href="#ekonomi" data-i18n="nav.ekonomi">Yeni Sektör</a></li>
         <li><a href="#mufredat" data-i18n="nav.mufredat">Müfredat</a></li>
@@ -600,6 +601,17 @@ body.edit-mode .lesson-chip::after{content:'✎';margin-left:auto;color:var(--ti
         <h3 style="color:var(--gold-bright) !important;"><span data-i18n="kadro.danisman.title">✦ Akademik Danışman</span></h3>
         <p style="color:#cdd4e5;" data-i18n="kadro.danisman.desc">Prof. Dr. Mustafa Kaçar — Bilim Tarihi</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="hocalarimiz">
+  <div class="container">
+    <span class="eyebrow text-center" style="display:block;" data-i18n="hocalar.eyebrow">Eğitim Kadromuz</span>
+    <h2 class="section-title reveal" data-i18n="hocalar.title">Hocalarımız</h2>
+    <div class="rule"></div>
+    <div class="grid-2" id="hocalarGrid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+      <p class="small-note" id="hocalarEmpty" style="display:none;text-align:center;grid-column:1/-1;">Yakında burada tanıtılacak.</p>
     </div>
   </div>
 </section>
@@ -1464,6 +1476,9 @@ const MODULE_PHILOSOPHY = {
   "tr": {
     "brand.sub": "School of Istanbul",
     "nav.kadro": "Akademik Kadro",
+    "nav.hocalar": "Hocalarımız",
+    "hocalar.eyebrow": "Eğitim Kadromuz",
+    "hocalar.title": "Hocalarımız",
     "kadro.eyebrow": "Akademik Yapı",
     "kadro.title": "Danışma Kurulu ve Akademik Danışmanlık",
     "kadro.danisma.title": "✦ Danışma Kurulu",
@@ -1795,6 +1810,9 @@ const MODULE_PHILOSOPHY = {
   "en": {
     "brand.sub": "School of Istanbul",
     "nav.kadro": "Academic Staff",
+    "nav.hocalar": "Our Instructors",
+    "hocalar.eyebrow": "Our Faculty",
+    "hocalar.title": "Our Instructors",
     "kadro.eyebrow": "Academic Structure",
     "kadro.title": "Advisory Board and Academic Advisory",
     "kadro.danisma.title": "✦ Advisory Board",
@@ -2152,6 +2170,7 @@ function applyI18n(){
   renderFeeTable();
   renderCalculator();
   filterLessons();
+  if(typeof renderHocalar === 'function') renderHocalar();
   if(typeof refreshAuthUI === 'function') refreshAuthUI();
   if(typeof getSession === 'function'){
     const session = getSession();
@@ -3539,6 +3558,33 @@ function escapeHtml(str){
 }
 
 /* ---------- init ---------- */
+async function renderHocalar(){
+  const grid = document.getElementById('hocalarGrid');
+  const emptyMsg = document.getElementById('hocalarEmpty');
+  const { data, error } = await db.from('instructor_profiles').select('*').eq('is_published', true).order('sort_order');
+  if(error || !data || !data.length){
+    if(emptyMsg) emptyMsg.style.display = '';
+    return;
+  }
+  if(emptyMsg) emptyMsg.style.display = 'none';
+  grid.innerHTML = data.map(h=>{
+    const name = currentLang==='tr' ? h.name_tr : (h.name_en || h.name_tr);
+    const title = currentLang==='tr' ? h.title_tr : (h.title_en || h.title_tr);
+    const bio = currentLang==='tr' ? h.bio_tr : (h.bio_en || h.bio_tr);
+    const branch = currentLang==='tr' ? h.branch_tr : (h.branch_en || h.branch_tr);
+    const photo = h.photo_url ? '<img src="'+h.photo_url+'" alt="" style="width:100%;height:220px;object-fit:cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0;">' : '';
+    return '<div class="card reveal" style="padding:0;overflow:hidden;">'+
+      photo+
+      '<div style="padding:22px;">'+
+        '<h3 style="margin-bottom:4px;">'+ (name||'') +'</h3>'+
+        (title ? '<div class="small-note" style="color:var(--gold-deep);font-weight:600;margin-bottom:8px;">'+title+'</div>' : '')+
+        (branch ? '<span class="meta-tag" style="margin-bottom:10px;display:inline-block;">'+branch+'</span>' : '')+
+        (bio ? '<p style="margin-top:10px;font-size:0.92rem;">'+bio+'</p>' : '')+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
 async function initApp(){
   await loadLessons();
   await applyOverridesOnLoad();
@@ -3546,6 +3592,7 @@ async function initApp(){
   applyI18n();
   observeReveals();
   renderCustomSections();
+  await renderHocalar();
 }
 initApp();
 
