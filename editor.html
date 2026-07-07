@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<title>İçerik Editörü — İstanbul Keşif Okulu</title>
+<style>
+  :root{
+    --ink:#0e1626; --gold:#c9a24b; --gold-deep:#a9812f; --border:#e2decf;
+    --bg:#f7f5ef; --card:#ffffff; --danger:#b5482f; --ok:#1f7a7a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Source Sans 3',Arial,sans-serif;background:var(--bg);color:var(--ink);}
+  #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+  .login-box{background:var(--card);padding:40px;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.12);max-width:380px;width:90%;}
+  .login-box h1{font-size:1.3rem;margin-bottom:8px;}
+  .login-box p{color:#666;font-size:0.9rem;margin-bottom:20px;}
+  input, textarea, select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:inherit;margin-bottom:12px;background:#fff;}
+  textarea{resize:vertical;min-height:70px;}
+  button{cursor:pointer;font-family:inherit;border:none;border-radius:8px;padding:10px 18px;font-size:0.92rem;font-weight:600;}
+  .btn-primary{background:var(--gold);color:#fff;}
+  .btn-primary:hover{background:var(--gold-deep);}
+  .btn-ghost{background:#fff;border:1px solid var(--border) !important;color:var(--ink);}
+  .btn-danger{background:#fff;border:1px solid var(--danger) !important;color:var(--danger);}
+  .error-msg{color:var(--danger);font-size:0.88rem;margin-bottom:10px;}
+  .success-msg{color:var(--ok);font-size:0.88rem;margin-bottom:10px;}
+
+  #appScreen{display:none;min-height:100vh;}
+  .topbar{background:var(--ink);color:#fff;padding:14px 24px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:50;}
+  .topbar h1{font-size:1.05rem;margin:0;flex:1;}
+  .topbar .status{font-size:0.8rem;color:#9aa3b8;}
+  .layout{display:flex;min-height:calc(100vh - 56px);}
+  .sidebar{width:220px;background:#fff;border-right:1px solid var(--border);padding:20px 0;flex-shrink:0;}
+  .sidebar button{display:block;width:100%;text-align:left;background:none;border:none;padding:12px 24px;font-size:0.92rem;color:var(--ink);border-radius:0;}
+  .sidebar button.active{background:rgba(201,162,75,.12);border-left:3px solid var(--gold);font-weight:700;}
+  .sidebar button:hover{background:rgba(0,0,0,.03);}
+  .content{flex:1;padding:28px 32px;max-width:900px;}
+  .content h2{margin-top:0;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  details{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden;}
+  details summary{padding:14px 18px;cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary::after{content:'▾';color:var(--gold-deep);}
+  details[open] summary::after{content:'▴';}
+  .key-row{padding:12px 18px;border-top:1px solid #f0ede4;}
+  .key-row label{display:block;font-size:0.76rem;color:#888;font-family:monospace;margin-bottom:4px;}
+
+  .card-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;}
+  .card-item .row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+  .card-item .actions{display:flex;gap:8px;flex-shrink:0;}
+  .search-box{margin-bottom:16px;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+  .form-grid .full{grid-column:1/-1;}
+  .lesson-list-item{padding:10px 14px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px;cursor:pointer;display:flex;justify-content:space-between;background:#fff;}
+  .lesson-list-item:hover{border-color:var(--gold);}
+  .lesson-code{font-family:monospace;color:var(--gold-deep);font-size:0.82rem;}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(14,22,38,.6);z-index:100;align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.active{display:flex;}
+  .modal-box{background:#fff;border-radius:14px;padding:26px;max-width:640px;width:100%;max-height:88vh;overflow-y:auto;}
+  .small-note{color:#888;font-size:0.82rem;}
+  .badge-published{background:#e8f5e9;color:#2e7d32;padding:2px 8px;border-radius:20px;font-size:0.72rem;font-weight:700;}
+  .badge-unpublished{background:#f5f5f5;color:#888;padding:2px 8px;border-radius:20px;font-size:0.72rem;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>🔐 İçerik Editörü</h1>
+    <p>İstanbul Keşif Okulu — sadece yetkili yönetici erişimi. Bu sayfa herkese açık site menüsünde görünmez.</p>
+    <div id="loginError" class="error-msg"></div>
+    <input type="password" id="editorPasswordInput" placeholder="Editör şifresi">
+    <button class="btn-primary" style="width:100%;" onclick="doLogin()">Giriş Yap</button>
+  </div>
+</div>
+
+<div id="appScreen">
+  <div class="topbar">
+    <h1>İstanbul Keşif Okulu — İçerik Editörü</h1>
+    <span class="status" id="saveStatus">Bağlı — değişiklikler anında canlı siteye yansır.</span>
+    <button class="btn-ghost" onclick="location.reload()">Çıkış</button>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <button class="tab-btn active" data-tab="metinler" onclick="switchTab('metinler')">📝 Site Metinleri</button>
+      <button class="tab-btn" data-tab="dersler" onclick="switchTab('dersler')">🎓 Dersler & Videolar</button>
+      <button class="tab-btn" data-tab="hocalar" onclick="switchTab('hocalar')">👤 Hocalarımız</button>
+      <button class="tab-btn" data-tab="bolumler" onclick="switchTab('bolumler')">🧩 Özel Bölümler</button>
+      <button class="tab-btn" data-tab="ayarlar" onclick="switchTab('ayarlar')">⚙️ Genel Ayarlar</button>
+    </div>
+    <div class="content">
+
+      <!-- SITE METİNLERİ -->
+      <div class="tab-panel active" id="tab-metinler">
+        <h2>Site Metinleri</h2>
+        <p class="small-note">Sitedeki tüm Türkçe metinler aşağıda kategorilere ayrılmış olarak listelenir. Bir metni değiştirip alandan çıktığınızda (veya "Kaydet"e bastığınızda) otomatik kaydedilir. <strong>İngilizce karşılıkları şimdilik değiştirmeyin</strong> — Türkçe düzeltmeler bitince bu metinleri Claude'a ileteceksiniz, İngilizce çevirisini birlikte hazırlayacaksınız.</p>
+        <input type="text" class="search-box" id="metinSearch" placeholder="Anahtar veya metin içinde ara..." oninput="renderMetinler()">
+        <div id="metinlerContainer"><p class="small-note">Yükleniyor…</p></div>
+      </div>
+
+      <!-- DERSLER -->
+      <div class="tab-panel" id="tab-dersler">
+        <h2>Dersler & Videolar</h2>
+        <p class="small-note">180 ders/keşif turunun tamamı burada. Bir derse tıklayarak başlığını, açıklamasını, video linkini, canlı ders linkini ve (keşif turları için) GPS konumunu düzenleyebilirsiniz.</p>
+        <input type="text" class="search-box" id="dersSearch" placeholder="Ders kodu veya başlık ara..." oninput="renderDersler()">
+        <div id="derslerContainer"><p class="small-note">Yükleniyor…</p></div>
+      </div>
+
+      <!-- HOCALARIMIZ -->
+      <div class="tab-panel" id="tab-hocalar">
+        <h2>Hocalarımız</h2>
+        <p class="small-note">Burada eklediğiniz hocalar, sitenin "Hocalarımız" bölümünde herkese görünür şekilde yayınlanır. Fotoğraf için bir görsel linki (URL) yapıştırmanız yeterli.</p>
+        <button class="btn-primary" onclick="openHocaModal(null)">+ Yeni Hoca Ekle</button>
+        <div id="hocalarContainer" style="margin-top:16px;"><p class="small-note">Yükleniyor…</p></div>
+      </div>
+
+      <!-- ÖZEL BÖLÜMLER -->
+      <div class="tab-panel" id="tab-bolumler">
+        <h2>Özel Bölümler</h2>
+        <p class="small-note">Siteye yeni metin/görsel blokları ekleyin — mevcut bölümlerin (Vizyon, Müfredat vb.) arasına yerleştirilir.</p>
+        <button class="btn-primary" onclick="openBolumModal()">+ Yeni Bölüm Ekle</button>
+        <div id="bolumlerContainer" style="margin-top:16px;"><p class="small-note">Yükleniyor…</p></div>
+      </div>
+
+      <!-- AYARLAR -->
+      <div class="tab-panel" id="tab-ayarlar">
+        <h2>Genel Ayarlar</h2>
+        <div class="card-item">
+          <label style="font-weight:700;display:block;margin-bottom:8px;">Kapak (Hero) Görseli</label>
+          <input type="text" id="heroImageInput" placeholder="https://...">
+          <button class="btn-primary" onclick="saveHeroImage()">Kaydet</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HOCA EKLE/DÜZENLE MODAL -->
+<div class="modal-overlay" id="hocaModal">
+  <div class="modal-box">
+    <h3 id="hocaModalTitle">Yeni Hoca</h3>
+    <input type="hidden" id="hocaId">
+    <label class="small-note">Fotoğraf URL</label>
+    <input type="text" id="hocaPhoto" placeholder="https://...">
+    <div class="form-grid">
+      <div><label class="small-note">Ad Soyad (TR)</label><input type="text" id="hocaNameTr"></div>
+      <div><label class="small-note">Ad Soyad (EN) — sonra</label><input type="text" id="hocaNameEn"></div>
+      <div><label class="small-note">Unvan (TR)</label><input type="text" id="hocaTitleTr"></div>
+      <div><label class="small-note">Unvan (EN) — sonra</label><input type="text" id="hocaTitleEn"></div>
+      <div><label class="small-note">Branş (TR)</label><input type="text" id="hocaBranchTr"></div>
+      <div><label class="small-note">Branş (EN) — sonra</label><input type="text" id="hocaBranchEn"></div>
+      <div class="full"><label class="small-note">Biyografi (TR)</label><textarea id="hocaBioTr"></textarea></div>
+      <div class="full"><label class="small-note">Biyografi (EN) — sonra</label><textarea id="hocaBioEn"></textarea></div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-weight:400;">
+      <input type="checkbox" id="hocaPublished" style="width:auto;margin:0;" checked> Sitede yayınlansın
+    </label>
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button class="btn-primary" onclick="saveHoca()">Kaydet</button>
+      <button class="btn-ghost" onclick="closeModal('hocaModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- DERS DÜZENLE MODAL -->
+<div class="modal-overlay" id="dersModal">
+  <div class="modal-box">
+    <h3 id="dersModalTitle">Ders Düzenle</h3>
+    <input type="hidden" id="dersCode">
+    <label class="small-note">Başlık (TR)</label>
+    <input type="text" id="dersTitleTr">
+    <label class="small-note">Açıklama (TR)</label>
+    <textarea id="dersDescTr" rows="4"></textarea>
+    <label class="small-note">Video URL (YouTube/Vimeo)</label>
+    <input type="text" id="dersVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+    <label class="small-note">Canlı Ders Linki (Zoom/Meet — teorik dersler)</label>
+    <input type="text" id="dersLiveUrl" placeholder="https://zoom.us/j/...">
+    <div class="form-grid">
+      <div><label class="small-note">Enlem (lat) — keşif turları</label><input type="text" id="dersLat"></div>
+      <div><label class="small-note">Boylam (lng) — keşif turları</label><input type="text" id="dersLng"></div>
+      <div><label class="small-note">Yarıçap (metre)</label><input type="text" id="dersRadius" value="100"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:12px;">
+      <button class="btn-primary" onclick="saveDers()">Kaydet</button>
+      <button class="btn-ghost" onclick="closeModal('dersModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- YENİ BÖLÜM MODAL -->
+<div class="modal-overlay" id="bolumModal">
+  <div class="modal-box">
+    <h3>Yeni Bölüm Ekle</h3>
+    <div style="display:flex;gap:10px;margin-bottom:14px;">
+      <button class="btn-ghost" id="bolumTypeText" onclick="selectBolumType('text')">📝 Metin Bloğu</button>
+      <button class="btn-ghost" id="bolumTypeImage" onclick="selectBolumType('image-text')">🖼 Görsel + Metin</button>
+    </div>
+    <label class="small-note">Başlık</label>
+    <input type="text" id="bolumHeading">
+    <div id="bolumImageGroup" style="display:none;">
+      <label class="small-note">Görsel URL</label>
+      <input type="text" id="bolumImageUrl">
+    </div>
+    <label class="small-note">Metin</label>
+    <textarea id="bolumBody" rows="4"></textarea>
+    <label class="small-note">Nereye eklensin?</label>
+    <select id="bolumPosition">
+      <option value="after-hero">Hero'dan sonra</option>
+      <option value="after-vizyon">Vizyon'dan sonra</option>
+      <option value="after-ekonomi">Yeni Sektör'den sonra</option>
+      <option value="after-mufredat">Müfredat'tan sonra</option>
+      <option value="after-kesif">Keşif Turları'ndan sonra</option>
+      <option value="after-yonetmelik">Yönetmelik'ten sonra</option>
+      <option value="before-footer" selected>En sona (footer'dan önce)</option>
+    </select>
+    <div style="display:flex;gap:10px;margin-top:12px;">
+      <button class="btn-primary" onclick="saveBolum()">Ekle</button>
+      <button class="btn-ghost" onclick="closeModal('bolumModal')">İptal</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ================= CONFIG ================= */
+const SUPABASE_URL = 'https://xcsvobtewvjlnjeyqiux.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_yjwxxm5IaMkEi1TCugejzA__cqLpYnP';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let editorPassword = null;
+let baseI18nTr = {};       // canlı siteden çekilen orijinal TR metinler
+let i18nOverrides = {};    // Supabase'deki mevcut düzenlemeler
+let allLessons = [];       // canlı siteden çekilen 180 dersin ham JSON verisi (lessons tablosu satırları)
+
+/* ================= LOGIN ================= */
+async function doLogin(){
+  const pass = document.getElementById('editorPasswordInput').value;
+  const errBox = document.getElementById('loginError');
+  errBox.textContent = '';
+  const { data, error } = await db.rpc('rpc_editor_verify', { p_password: pass });
+  if(error || !data){
+    errBox.textContent = 'Şifre hatalı. Tekrar deneyin.';
+    return;
+  }
+  editorPassword = pass;
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  await bootstrapData();
+}
+
+/* ================= TABS ================= */
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===name));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active', p.id==='tab-'+name));
+}
+function closeModal(id){ document.getElementById(id).classList.remove('active'); }
+function flash(msg, ok){
+  const s = document.getElementById('saveStatus');
+  s.textContent = msg;
+  s.style.color = ok===false ? '#f87171' : '#4ade80';
+  setTimeout(()=>{ s.textContent = 'Bağlı — değişiklikler anında canlı siteye yansır.'; s.style.color=''; }, 2200);
+}
+
+/* ================= BOOTSTRAP: load everything ================= */
+async function bootstrapData(){
+  // 1) canlı sitenin index.html'inden orijinal (varsayılan) TR metinlerini çek
+  try{
+    const res = await fetch('index.html', { cache: 'no-store' });
+    const html = await res.text();
+    const m = html.match(/<script id="i18n-data" type="application\/json">([\s\S]*?)<\/script>/);
+    if(m){
+      const parsed = JSON.parse(m[1]);
+      baseI18nTr = parsed.tr || {};
+    }
+  }catch(e){ console.error('index.html okunamadı', e); }
+
+  // 2) Supabase'deki mevcut düzenlemeleri çek
+  const { data: overrideRows } = await db.from('i18n_overrides').select('*').eq('lang','tr');
+  i18nOverrides = {};
+  (overrideRows||[]).forEach(r=> i18nOverrides[r.key] = r.value);
+
+  renderMetinler();
+
+  // 3) dersleri çek
+  const { data: lessonRows } = await db.from('lessons').select('*').order('day');
+  allLessons = lessonRows || [];
+  renderDersler();
+
+  // 4) hocaları ve bölümleri ve ayarları yükle (sekmelere tıklanınca da tazelenir)
+  await loadHocalar();
+  await loadBolumler();
+  const { data: settings } = await db.rpc('rpc_get_public_settings');
+  document.getElementById('heroImageInput').value = (settings && settings.hero_image_url) || '';
+}
+
+/* ================= SITE METİNLERİ ================= */
+function effectiveValue(key){
+  return i18nOverrides.hasOwnProperty(key) ? i18nOverrides[key] : baseI18nTr[key];
+}
+function renderMetinler(){
+  const container = document.getElementById('metinlerContainer');
+  const search = document.getElementById('metinSearch').value.trim().toLowerCase();
+  const groups = {};
+  Object.keys(baseI18nTr).sort().forEach(key=>{
+    const val = effectiveValue(key) || '';
+    if(search && !key.toLowerCase().includes(search) && !val.toLowerCase().includes(search)) return;
+    const prefix = key.split('.')[0];
+    groups[prefix] = groups[prefix] || [];
+    groups[prefix].push(key);
+  });
+  const prefixNames = Object.keys(groups).sort();
+  if(!prefixNames.length){ container.innerHTML = '<p class="small-note">Sonuç bulunamadı.</p>'; return; }
+  container.innerHTML = prefixNames.map(prefix=>{
+    const keys = groups[prefix];
+    const rows = keys.map(key=>{
+      const val = effectiveValue(key) || '';
+      const isLong = val.length > 80 || val.includes('<');
+      const fieldId = 'field_' + key.replace(/[^a-zA-Z0-9]/g,'_');
+      return '<div class="key-row"><label>'+key+'</label>'+
+        (isLong
+          ? '<textarea id="'+fieldId+'" onblur="saveMetin(\''+key+'\', this.value)">'+escapeHtml(val)+'</textarea>'
+          : '<input type="text" id="'+fieldId+'" value="'+escapeAttr(val)+'" onblur="saveMetin(\''+key+'\', this.value)">')
+        +'</div>';
+    }).join('');
+    return '<details'+(search?' open':'')+'><summary>'+prefix+' <span class="small-note">('+keys.length+')</span></summary>'+rows+'</details>';
+  }).join('');
+}
+async function saveMetin(key, value){
+  if(effectiveValue(key) === value) return; // değişmemiş
+  const { error } = await db.rpc('rpc_editor_save_i18n', { p_password: editorPassword, p_lang: 'tr', p_key: key, p_value: value });
+  if(error){ flash('Kaydedilemedi: '+key, false); return; }
+  i18nOverrides[key] = value;
+  flash('✓ Kaydedildi: '+key, true);
+}
+function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function escapeAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
+
+/* ================= DERSLER ================= */
+function renderDersler(){
+  const container = document.getElementById('derslerContainer');
+  const search = document.getElementById('dersSearch').value.trim().toLowerCase();
+  const filtered = allLessons.filter(l=>{
+    if(!search) return true;
+    return l.code.toLowerCase().includes(search) || (l.title_tr||'').toLowerCase().includes(search);
+  });
+  if(!filtered.length){ container.innerHTML = '<p class="small-note">Sonuç bulunamadı.</p>'; return; }
+  container.innerHTML = filtered.map(l=>
+    '<div class="lesson-list-item" onclick="openDersModal(\''+l.code+'\')">'+
+      '<div><span class="lesson-code">'+l.code+'</span> — '+(l.title_tr||'')+'</div>'+
+      '<div class="small-note">'+(l.video_url?'▶ video ':'')+(l.lat?'📍 konum':'')+'</div>'+
+    '</div>'
+  ).join('');
+}
+function openDersModal(code){
+  const l = allLessons.find(x=>x.code===code);
+  if(!l) return;
+  document.getElementById('dersCode').value = code;
+  document.getElementById('dersModalTitle').textContent = code + ' — ' + l.title_tr;
+  document.getElementById('dersTitleTr').value = l.title_tr || '';
+  document.getElementById('dersDescTr').value = l.desc_tr || '';
+  document.getElementById('dersVideoUrl').value = l.video_url || '';
+  document.getElementById('dersLiveUrl').value = l.live_url || '';
+  document.getElementById('dersLat').value = l.lat != null ? l.lat : '';
+  document.getElementById('dersLng').value = l.lng != null ? l.lng : '';
+  document.getElementById('dersRadius').value = l.geofence_radius_m != null ? l.geofence_radius_m : 100;
+  document.getElementById('dersModal').classList.add('active');
+}
+async function saveDers(){
+  const code = document.getElementById('dersCode').value;
+  const l = allLessons.find(x=>x.code===code);
+  const titleTr = document.getElementById('dersTitleTr').value;
+  const descTr = document.getElementById('dersDescTr').value;
+  const videoUrl = document.getElementById('dersVideoUrl').value.trim() || null;
+  const liveUrl = document.getElementById('dersLiveUrl').value.trim() || null;
+  const latVal = document.getElementById('dersLat').value.trim();
+  const lngVal = document.getElementById('dersLng').value.trim();
+  const radiusVal = document.getElementById('dersRadius').value.trim();
+  const { error } = await db.rpc('rpc_editor_save_lesson', {
+    p_password: editorPassword, p_code: code,
+    p_title_tr: titleTr, p_title_en: l.title_en, p_desc_tr: descTr, p_desc_en: l.desc_en,
+    p_video_url: videoUrl, p_lat: latVal?parseFloat(latVal):null, p_lng: lngVal?parseFloat(lngVal):null,
+    p_geofence_radius_m: radiusVal?parseInt(radiusVal,10):100, p_live_url: liveUrl
+  });
+  if(error){ flash('Ders kaydedilemedi', false); return; }
+  Object.assign(l, { title_tr:titleTr, desc_tr:descTr, video_url:videoUrl, live_url:liveUrl,
+    lat: latVal?parseFloat(latVal):null, lng: lngVal?parseFloat(lngVal):null, geofence_radius_m: radiusVal?parseInt(radiusVal,10):100 });
+  closeModal('dersModal');
+  renderDersler();
+  flash('✓ Ders kaydedildi: '+code, true);
+}
+
+/* ================= HOCALARIMIZ ================= */
+let allHocalar = [];
+async function loadHocalar(){
+  const { data, error } = await db.rpc('rpc_editor_list_instructor_profiles', { p_password: editorPassword });
+  if(error){ document.getElementById('hocalarContainer').innerHTML = '<p class="small-note">Hata: '+error.message+'</p>'; return; }
+  allHocalar = data || [];
+  renderHocalarList();
+}
+function renderHocalarList(){
+  const container = document.getElementById('hocalarContainer');
+  if(!allHocalar.length){ container.innerHTML = '<p class="small-note">Henüz hoca eklenmedi.</p>'; return; }
+  container.innerHTML = allHocalar.map(h=>
+    '<div class="card-item"><div class="row"><div>'+
+      '<strong>'+h.name_tr+'</strong> '+(h.is_published?'<span class="badge-published">Yayında</span>':'<span class="badge-unpublished">Taslak</span>')+
+      '<div class="small-note">'+(h.title_tr||'')+'</div></div>'+
+      '<div class="actions">'+
+        '<button class="btn-ghost" onclick="openHocaModal(\''+h.id+'\')">Düzenle</button>'+
+        '<button class="btn-danger" onclick="deleteHoca(\''+h.id+'\')">Sil</button>'+
+      '</div></div></div>'
+  ).join('');
+}
+function openHocaModal(id){
+  const h = id ? allHocalar.find(x=>x.id===id) : null;
+  document.getElementById('hocaId').value = id || '';
+  document.getElementById('hocaModalTitle').textContent = h ? 'Hoca Düzenle' : 'Yeni Hoca';
+  document.getElementById('hocaPhoto').value = h ? (h.photo_url||'') : '';
+  document.getElementById('hocaNameTr').value = h ? (h.name_tr||'') : '';
+  document.getElementById('hocaNameEn').value = h ? (h.name_en||'') : '';
+  document.getElementById('hocaTitleTr').value = h ? (h.title_tr||'') : '';
+  document.getElementById('hocaTitleEn').value = h ? (h.title_en||'') : '';
+  document.getElementById('hocaBranchTr').value = h ? (h.branch_tr||'') : '';
+  document.getElementById('hocaBranchEn').value = h ? (h.branch_en||'') : '';
+  document.getElementById('hocaBioTr').value = h ? (h.bio_tr||'') : '';
+  document.getElementById('hocaBioEn').value = h ? (h.bio_en||'') : '';
+  document.getElementById('hocaPublished').checked = h ? h.is_published : true;
+  document.getElementById('hocaModal').classList.add('active');
+}
+async function saveHoca(){
+  const id = document.getElementById('hocaId').value || null;
+  const { error } = await db.rpc('rpc_editor_save_instructor_profile', {
+    p_password: editorPassword, p_id: id,
+    p_photo_url: document.getElementById('hocaPhoto').value.trim() || null,
+    p_name_tr: document.getElementById('hocaNameTr').value.trim(),
+    p_name_en: document.getElementById('hocaNameEn').value.trim() || null,
+    p_title_tr: document.getElementById('hocaTitleTr').value.trim() || null,
+    p_title_en: document.getElementById('hocaTitleEn').value.trim() || null,
+    p_bio_tr: document.getElementById('hocaBioTr').value.trim() || null,
+    p_bio_en: document.getElementById('hocaBioEn').value.trim() || null,
+    p_branch_tr: document.getElementById('hocaBranchTr').value.trim() || null,
+    p_branch_en: document.getElementById('hocaBranchEn').value.trim() || null,
+    p_sort_order: 0,
+    p_is_published: document.getElementById('hocaPublished').checked
+  });
+  if(error){ flash('Hoca kaydedilemedi: '+error.message, false); return; }
+  closeModal('hocaModal');
+  await loadHocalar();
+  flash('✓ Hoca kaydedildi', true);
+}
+async function deleteHoca(id){
+  if(!confirm('Bu hocayı silmek istediğinize emin misiniz?')) return;
+  const { error } = await db.rpc('rpc_editor_delete_instructor_profile', { p_password: editorPassword, p_id: id });
+  if(error){ flash('Silinemedi', false); return; }
+  await loadHocalar();
+  flash('✓ Silindi', true);
+}
+
+/* ================= ÖZEL BÖLÜMLER ================= */
+let allBolumler = [];
+let pendingBolumType = 'text';
+async function loadBolumler(){
+  const { data } = await db.from('custom_sections').select('*').order('sort_order');
+  allBolumler = data || [];
+  renderBolumlerList();
+}
+function renderBolumlerList(){
+  const container = document.getElementById('bolumlerContainer');
+  if(!allBolumler.length){ container.innerHTML = '<p class="small-note">Henüz özel bölüm eklenmedi.</p>'; return; }
+  container.innerHTML = allBolumler.map(b=>
+    '<div class="card-item"><div class="row"><div><strong>'+(b.heading||'(başlıksız)')+'</strong>'+
+      '<div class="small-note">'+(b.body||'').slice(0,80)+'…</div></div>'+
+      '<div class="actions"><button class="btn-danger" onclick="deleteBolum(\''+b.id+'\')">Sil</button></div>'+
+    '</div></div>'
+  ).join('');
+}
+function openBolumModal(){
+  document.getElementById('bolumHeading').value = '';
+  document.getElementById('bolumBody').value = '';
+  document.getElementById('bolumImageUrl').value = '';
+  selectBolumType('text');
+  document.getElementById('bolumModal').classList.add('active');
+}
+function selectBolumType(type){
+  pendingBolumType = type;
+  document.getElementById('bolumTypeText').style.borderColor = type==='text' ? '#c9a24b' : '#e2decf';
+  document.getElementById('bolumTypeImage').style.borderColor = type==='image-text' ? '#c9a24b' : '#e2decf';
+  document.getElementById('bolumImageGroup').style.display = type==='image-text' ? '' : 'none';
+}
+async function saveBolum(){
+  const heading = document.getElementById('bolumHeading').value.trim();
+  const body = document.getElementById('bolumBody').value.trim();
+  const imageUrl = document.getElementById('bolumImageUrl').value.trim();
+  const position = document.getElementById('bolumPosition').value;
+  if(!heading && !body){ alert('Lütfen başlık veya metin girin.'); return; }
+  const id = 'blk_' + Date.now().toString(36);
+  const { error } = await db.rpc('rpc_editor_insert_section', {
+    p_password: editorPassword, p_id: id, p_type: pendingBolumType,
+    p_heading: heading, p_body: body, p_image_url: imageUrl || null, p_position: position
+  });
+  if(error){ flash('Bölüm eklenemedi', false); return; }
+  closeModal('bolumModal');
+  await loadBolumler();
+  flash('✓ Bölüm eklendi', true);
+}
+async function deleteBolum(id){
+  if(!confirm('Bu bölümü silmek istediğinize emin misiniz?')) return;
+  const { error } = await db.rpc('rpc_editor_delete_section', { p_password: editorPassword, p_id: id });
+  if(error){ flash('Silinemedi', false); return; }
+  await loadBolumler();
+  flash('✓ Silindi', true);
+}
+
+/* ================= AYARLAR ================= */
+async function saveHeroImage(){
+  const url = document.getElementById('heroImageInput').value.trim();
+  const { error } = await db.rpc('rpc_editor_save_setting', { p_password: editorPassword, p_key: 'hero_image_url', p_value: url });
+  if(error){ flash('Kaydedilemedi', false); return; }
+  flash('✓ Kapak görseli güncellendi', true);
+}
+</script>
+</body>
+</html>
